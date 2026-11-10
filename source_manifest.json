@@ -1,0 +1,356 @@
+{
+  "revision": "v17_iteration05_answer",
+  "source_commit": "03fc25e3a472891f50056df1cc79b1557c7549f8",
+  "files": [
+    {
+      "path": "infra/a100/build_bird_history_semantics.py",
+      "sha256": "2b42546fe90609500bfd0f9797d9b9cc956afb21a96ec39a0763db7e208e648c",
+      "original_manifest_sha256": "2b42546fe90609500bfd0f9797d9b9cc956afb21a96ec39a0763db7e208e648c"
+    },
+    {
+      "path": "infra/materialize_beaver_sqlite_snapshots.py",
+      "sha256": "361e90f9c6dcc358187c0e419f3970cb7405cae6ba92f0f16d9f2f990128dea7",
+      "original_manifest_sha256": "361e90f9c6dcc358187c0e419f3970cb7405cae6ba92f0f16d9f2f990128dea7"
+    },
+    {
+      "path": "infra/materialize_drspider_recovery_assets.py",
+      "sha256": "1a23271b22c418a02a654459fad24410179286abdda2aba3cf65f0be1b975338",
+      "original_manifest_sha256": "1a23271b22c418a02a654459fad24410179286abdda2aba3cf65f0be1b975338"
+    },
+    {
+      "path": "infra/materialize_evoschema_current_sqlite.py",
+      "sha256": "f86bd6a31ceeed2b0524e53e33d50888b7d60dbb96a523c4ba6cf74e4e6ecb65",
+      "original_manifest_sha256": "f86bd6a31ceeed2b0524e53e33d50888b7d60dbb96a523c4ba6cf74e4e6ecb65"
+    },
+    {
+      "path": "infra/materialize_fiben_operational_ontology.py",
+      "sha256": "1d60d5a4c2c47960cd565c6b4e01f15c4f48a7c8bac4e0084778e1e4b8119b66",
+      "original_manifest_sha256": "1d60d5a4c2c47960cd565c6b4e01f15c4f48a7c8bac4e0084778e1e4b8119b66"
+    },
+    {
+      "path": "infra/materialize_kaggledbqa_operational_ontology.py",
+      "sha256": "98adc1e23f8990fd3c54199ea77d06498e72f7a6055c4f15cfe221a2a64e5a5c",
+      "original_manifest_sha256": "98adc1e23f8990fd3c54199ea77d06498e72f7a6055c4f15cfe221a2a64e5a5c"
+    },
+    {
+      "path": "infra/materialize_kaggledbqa_recovery_assets.py",
+      "sha256": "4ecc0573efa5cd275988b274a6225a2737e279346f0600b0cced65499a7929da",
+      "original_manifest_sha256": "4ecc0573efa5cd275988b274a6225a2737e279346f0600b0cced65499a7929da"
+    },
+    {
+      "path": "infra/run_beaver_full.py",
+      "sha256": "fd220a1ad57435f4a370c8c2dfa321d57c4ad8adf972f31073c9c7148b90e6b8",
+      "original_manifest_sha256": "fd220a1ad57435f4a370c8c2dfa321d57c4ad8adf972f31073c9c7148b90e6b8"
+    },
+    {
+      "path": "infra/run_bird_react_recovery.py",
+      "sha256": "eb426cd3b711f4211d765ab1c5e5ed54fbb5eeb458c157d05449b1a7f8eff47e",
+      "original_manifest_sha256": "eb426cd3b711f4211d765ab1c5e5ed54fbb5eeb458c157d05449b1a7f8eff47e"
+    },
+    {
+      "path": "infra/run_evoschema_main.py",
+      "sha256": "9da785dec81deecde067fae026a0011353c9b22af49a7262c64faa64d933bfa8",
+      "original_manifest_sha256": "9da785dec81deecde067fae026a0011353c9b22af49a7262c64faa64d933bfa8"
+    },
+    {
+      "path": "infra/run_ontology_react.py",
+      "sha256": "f15dbf56301f6f4de82f172de3aa597dc82731724e255f787ba9f92fe4b93e96",
+      "original_manifest_sha256": "f15dbf56301f6f4de82f172de3aa597dc82731724e255f787ba9f92fe4b93e96"
+    },
+    {
+      "path": "infra/run_spider2_dual_evidence_main.py",
+      "sha256": "045c609b2b345f460295e8c49b11a544f181a3ef696d7af44766a5338e3e6c87",
+      "original_manifest_sha256": "045c609b2b345f460295e8c49b11a544f181a3ef696d7af44766a5338e3e6c87"
+    },
+    {
+      "path": "infra/run_spider2_react.py",
+      "sha256": "275d0771c5dbbd285829336d180b6b4badd8c7f6680f7419159a28e6d6d4a451",
+      "original_manifest_sha256": "275d0771c5dbbd285829336d180b6b4badd8c7f6680f7419159a28e6d6d4a451"
+    },
+    {
+      "path": "src/finsemguard/__init__.py",
+      "sha256": "8e02d34c96934871e0cb2d449c6eebd6643609c4dc37ccfc5d13114aed416445",
+      "original_manifest_sha256": "8e02d34c96934871e0cb2d449c6eebd6643609c4dc37ccfc5d13114aed416445"
+    },
+    {
+      "path": "src/finsemguard/agent/__init__.py",
+      "sha256": "f9d44e35476af6b171a2ff26ea51966f5c9ad4165bdc40cbeff9186646279b5e",
+      "original_manifest_sha256": "f9d44e35476af6b171a2ff26ea51966f5c9ad4165bdc40cbeff9186646279b5e"
+    },
+    {
+      "path": "src/finsemguard/agent/llm.py",
+      "sha256": "db5ec792eb2e68f62de669de901a7b761aea1b822f204834980942b722bae4c5",
+      "original_manifest_sha256": "db5ec792eb2e68f62de669de901a7b761aea1b822f204834980942b722bae4c5"
+    },
+    {
+      "path": "src/finsemguard/baselines/__init__.py",
+      "sha256": "3c4b1a8462007b7fad5d2ee8f562d636830e40c02a63209f1ccc5207491347e5",
+      "original_manifest_sha256": "3c4b1a8462007b7fad5d2ee8f562d636830e40c02a63209f1ccc5207491347e5"
+    },
+    {
+      "path": "src/finsemguard/baselines/autolink_spider2.py",
+      "sha256": "30f2aebcf9e02dff8c1b81ff4cd0a326a202c9341632a065366f0728994f101a",
+      "original_manifest_sha256": "30f2aebcf9e02dff8c1b81ff4cd0a326a202c9341632a065366f0728994f101a"
+    },
+    {
+      "path": "src/finsemguard/config.py",
+      "sha256": "753c2575e8e44359529a1a287ab364d50dfe4d1652c407ba0b092eab54e09e96",
+      "original_manifest_sha256": "753c2575e8e44359529a1a287ab364d50dfe4d1652c407ba0b092eab54e09e96"
+    },
+    {
+      "path": "src/finsemguard/data/__init__.py",
+      "sha256": "0e44090825e0e0f94fa559e0f2bfa84e58f506ad199d4f9bd28f8e896b99ec6a",
+      "original_manifest_sha256": "0e44090825e0e0f94fa559e0f2bfa84e58f506ad199d4f9bd28f8e896b99ec6a"
+    },
+    {
+      "path": "src/finsemguard/data/bird.py",
+      "sha256": "a2837cfa46501fca9de7b170624f7300d346da91aa74cfcb39cc226d7f12f020",
+      "original_manifest_sha256": "a2837cfa46501fca9de7b170624f7300d346da91aa74cfcb39cc226d7f12f020"
+    },
+    {
+      "path": "src/finsemguard/data/fiben.py",
+      "sha256": "58d1eac7e596f5fb697772cb406413ce4f01bd1ed1199599115c8fa12fc50192",
+      "original_manifest_sha256": "58d1eac7e596f5fb697772cb406413ce4f01bd1ed1199599115c8fa12fc50192"
+    },
+    {
+      "path": "src/finsemguard/e2e/__init__.py",
+      "sha256": "07bdc527a6f3cce211a90ef0c423668e6a39c05889097ee6871e619333319dd2",
+      "original_manifest_sha256": "07bdc527a6f3cce211a90ef0c423668e6a39c05889097ee6871e619333319dd2"
+    },
+    {
+      "path": "src/finsemguard/e2e/adapters.py",
+      "sha256": "33064b5c174c1c3a3e41e37db4c791037c9454c305bb597770cc9a884cb78388",
+      "original_manifest_sha256": "33064b5c174c1c3a3e41e37db4c791037c9454c305bb597770cc9a884cb78388"
+    },
+    {
+      "path": "src/finsemguard/e2e/anchor_join_tree_repair.py",
+      "sha256": "5c578523b9adf0817e0699b5ec11759d79d2bb4af93fb6b4eb06359c79c2d86c",
+      "original_manifest_sha256": "5c578523b9adf0817e0699b5ec11759d79d2bb4af93fb6b4eb06359c79c2d86c"
+    },
+    {
+      "path": "src/finsemguard/e2e/anchored_relation_program.py",
+      "sha256": "0ab70677a05dd1519695dc61d5e3471b0e8a8e8b178d2a22f9a6964a0d77c8b3",
+      "original_manifest_sha256": "0ab70677a05dd1519695dc61d5e3471b0e8a8e8b178d2a22f9a6964a0d77c8b3"
+    },
+    {
+      "path": "src/finsemguard/e2e/beaver.py",
+      "sha256": "18412e4c4c0d3063223e282a0894e7f6efe856a30a505d4ee11bc0447de76ef8",
+      "original_manifest_sha256": "18412e4c4c0d3063223e282a0894e7f6efe856a30a505d4ee11bc0447de76ef8"
+    },
+    {
+      "path": "src/finsemguard/e2e/contracts.py",
+      "sha256": "a85cffe20871b7950929e19cd09a1f8862827f981689cf3c9f24b878eccb31d9",
+      "original_manifest_sha256": "a85cffe20871b7950929e19cd09a1f8862827f981689cf3c9f24b878eccb31d9"
+    },
+    {
+      "path": "src/finsemguard/e2e/direct_raw_evidence_sql.py",
+      "sha256": "3b0fefcb11cb8444118e92131ed45d4712062d0be0518e210f7d84bfefcdc0e5",
+      "original_manifest_sha256": "3b0fefcb11cb8444118e92131ed45d4712062d0be0518e210f7d84bfefcdc0e5"
+    },
+    {
+      "path": "src/finsemguard/e2e/evolution_aware_relation_repair.py",
+      "sha256": "a914135d68a5637b83ecf41039ad5861e60a265be38a093a012d7c1819b85af0",
+      "original_manifest_sha256": "a914135d68a5637b83ecf41039ad5861e60a265be38a093a012d7c1819b85af0"
+    },
+    {
+      "path": "src/finsemguard/e2e/evolution_relations.py",
+      "sha256": "837277a4bd4f24b66df2137edc621c4877ec8b7d2d9e0da838b14a64441c6680",
+      "original_manifest_sha256": "837277a4bd4f24b66df2137edc621c4877ec8b7d2d9e0da838b14a64441c6680"
+    },
+    {
+      "path": "src/finsemguard/e2e/evoschema.py",
+      "sha256": "0bec63a09f00dab1b439cffcb10883198230df32b1eb6a606b157724d31e595d",
+      "original_manifest_sha256": "0bec63a09f00dab1b439cffcb10883198230df32b1eb6a606b157724d31e595d"
+    },
+    {
+      "path": "src/finsemguard/e2e/graph_evo_main.py",
+      "sha256": "551a8a4c2655f4410c776751578057cee82da0c5995efe4a95e8552ebe71fd51",
+      "original_manifest_sha256": "551a8a4c2655f4410c776751578057cee82da0c5995efe4a95e8552ebe71fd51"
+    },
+    {
+      "path": "src/finsemguard/e2e/graph_evo_program_context.py",
+      "sha256": "0797c73d8f0678abe6420f81b4693e5c9ddbae559b60eda58870a66e3863c363",
+      "original_manifest_sha256": "0797c73d8f0678abe6420f81b4693e5c9ddbae559b60eda58870a66e3863c363"
+    },
+    {
+      "path": "src/finsemguard/e2e/livesqlbench.py",
+      "sha256": "10c95beb5190be191da478485e8412e340f189be6c51279fae00d26ddcf139d6",
+      "original_manifest_sha256": "10c95beb5190be191da478485e8412e340f189be6c51279fae00d26ddcf139d6"
+    },
+    {
+      "path": "src/finsemguard/e2e/livesqlbench_runner.py",
+      "sha256": "ab47e2fdb6e8fcdca3df63ee6b31c0fbdb89e4462cdb6f45bc4895a3c0bf723d",
+      "original_manifest_sha256": "ab47e2fdb6e8fcdca3df63ee6b31c0fbdb89e4462cdb6f45bc4895a3c0bf723d"
+    },
+    {
+      "path": "src/finsemguard/e2e/method_identity.py",
+      "sha256": "0a996715ccaae7a3c0ea686c12862ae45d188bd3cf16459dac70e864321bf3fa",
+      "original_manifest_sha256": "0a996715ccaae7a3c0ea686c12862ae45d188bd3cf16459dac70e864321bf3fa"
+    },
+    {
+      "path": "src/finsemguard/e2e/minimal_join_tree.py",
+      "sha256": "d00924c6b4b2b3026f213b023977ed2a1c575c46968bab3e6e54cd041dde691b",
+      "original_manifest_sha256": "d00924c6b4b2b3026f213b023977ed2a1c575c46968bab3e6e54cd041dde691b"
+    },
+    {
+      "path": "src/finsemguard/e2e/operational_ontology.py",
+      "sha256": "56aa42f2638db33460281c14d4e11e347846782404948386d02a3ed49ecd6448",
+      "original_manifest_sha256": "56aa42f2638db33460281c14d4e11e347846782404948386d02a3ed49ecd6448"
+    },
+    {
+      "path": "src/finsemguard/e2e/performance_pipeline.py",
+      "sha256": "abcf393a963d8e7b31477a27e7e512871a04640831e6aac0083af8a5cb4cab92",
+      "original_manifest_sha256": "abcf393a963d8e7b31477a27e7e512871a04640831e6aac0083af8a5cb4cab92"
+    },
+    {
+      "path": "src/finsemguard/e2e/physical_sql_observer.py",
+      "sha256": "a25972451e342866b2c4538c70939822770c74718e7d87eda14b36e5b3b04896",
+      "original_manifest_sha256": "a25972451e342866b2c4538c70939822770c74718e7d87eda14b36e5b3b04896"
+    },
+    {
+      "path": "src/finsemguard/e2e/preflight.py",
+      "sha256": "7318d28a5f3be5155c225c704893da255e8a35becd83ceeffbb93d5234c8924c",
+      "original_manifest_sha256": "7318d28a5f3be5155c225c704893da255e8a35becd83ceeffbb93d5234c8924c"
+    },
+    {
+      "path": "src/finsemguard/e2e/react_text2sql.py",
+      "sha256": "e2e86a452d2e0ae24ebfe2cd4f062430fa8a2fefc70c53b84177f4be4ce72e09",
+      "original_manifest_sha256": "e2e86a452d2e0ae24ebfe2cd4f062430fa8a2fefc70c53b84177f4be4ce72e09"
+    },
+    {
+      "path": "src/finsemguard/e2e/relational_program_compiler.py",
+      "sha256": "96852fe3916d43dca422a958ea990ed8325c55b7cfd7fe85f752dc476b05c0ea",
+      "original_manifest_sha256": "96852fe3916d43dca422a958ea990ed8325c55b7cfd7fe85f752dc476b05c0ea"
+    },
+    {
+      "path": "src/finsemguard/e2e/retrieval_snapshot.py",
+      "sha256": "593915ec3a22f828d61e4334095feadadb5d1c1e9209bdd58ede7b370bcca8d9",
+      "original_manifest_sha256": "593915ec3a22f828d61e4334095feadadb5d1c1e9209bdd58ede7b370bcca8d9"
+    },
+    {
+      "path": "src/finsemguard/e2e/role_first_relational_program.py",
+      "sha256": "e8cf52152ee15078f8d2e116dae8841d15cf3dff83086e1f9e6fb5a6d842ea3e",
+      "original_manifest_sha256": "e8cf52152ee15078f8d2e116dae8841d15cf3dff83086e1f9e6fb5a6d842ea3e"
+    },
+    {
+      "path": "src/finsemguard/e2e/semantic_scope_contract.py",
+      "sha256": "929a6fb8ab06c9f1471c63aa0f39187d1f88278f37d98a83917e8ad4aeaa2428",
+      "original_manifest_sha256": "929a6fb8ab06c9f1471c63aa0f39187d1f88278f37d98a83917e8ad4aeaa2428"
+    },
+    {
+      "path": "src/finsemguard/e2e/spider2.py",
+      "sha256": "1ec1d2c36508b51287464faed093a35401ace3c4b8c30993180a7f8bb898ba81",
+      "original_manifest_sha256": "1ec1d2c36508b51287464faed093a35401ace3c4b8c30993180a7f8bb898ba81"
+    },
+    {
+      "path": "src/finsemguard/e2e/spider2_runner.py",
+      "sha256": "c63e4b006eff61ff2ad5884b99afcd190b4a09c1c9eddfd7a875153d6e4e40ae",
+      "original_manifest_sha256": "c63e4b006eff61ff2ad5884b99afcd190b4a09c1c9eddfd7a875153d6e4e40ae"
+    },
+    {
+      "path": "src/finsemguard/e2e/sql_composition_binding.py",
+      "sha256": "ea901899affd94a7563a74733009f8fc0a4c3a50af12e85171b47c6f11b24358",
+      "original_manifest_sha256": "ea901899affd94a7563a74733009f8fc0a4c3a50af12e85171b47c6f11b24358"
+    },
+    {
+      "path": "src/finsemguard/e2e/sql_contract_plan.py",
+      "sha256": "7b8db3ad19a342535690ca61f4bbab9392fc7c16aba10ff924b7737bf11b446f",
+      "original_manifest_sha256": "7b8db3ad19a342535690ca61f4bbab9392fc7c16aba10ff924b7737bf11b446f"
+    },
+    {
+      "path": "src/finsemguard/e2e/sql_contract_scope.py",
+      "sha256": "2185089b442fa8ab44afdf72fb46ca5ab2a5cca3da5a9e7a3ef943aaaaaa55b2",
+      "original_manifest_sha256": "2185089b442fa8ab44afdf72fb46ca5ab2a5cca3da5a9e7a3ef943aaaaaa55b2"
+    },
+    {
+      "path": "src/finsemguard/e2e/sql_history_composer.py",
+      "sha256": "45985450e62d9a3f154596851ca6df12ace229b09d4744a075df1fc6960126f1",
+      "original_manifest_sha256": "45985450e62d9a3f154596851ca6df12ace229b09d4744a075df1fc6960126f1"
+    },
+    {
+      "path": "src/finsemguard/e2e/sqlite_catalog.py",
+      "sha256": "85484c4f224b7a7ec77bd0607f12a3a1410c66d02525cac5d44333cba5e7c999",
+      "original_manifest_sha256": "85484c4f224b7a7ec77bd0607f12a3a1410c66d02525cac5d44333cba5e7c999"
+    },
+    {
+      "path": "src/finsemguard/e2e/sqlite_runner.py",
+      "sha256": "eb3ce97106ddef57efb34b360efc7e3f272616424fe7e50ff63c65d1063b731b",
+      "original_manifest_sha256": "eb3ce97106ddef57efb34b360efc7e3f272616424fe7e50ff63c65d1063b731b"
+    },
+    {
+      "path": "src/finsemguard/ontology_discovery/__init__.py",
+      "sha256": "abd717e3046a831e123d8c7367183d60cc5c421ac83d0526b19bb1b09f8004ec",
+      "original_manifest_sha256": "abd717e3046a831e123d8c7367183d60cc5c421ac83d0526b19bb1b09f8004ec"
+    },
+    {
+      "path": "src/finsemguard/ontology_discovery/dependency_update.py",
+      "sha256": "9c31ac756797d90f7e22a517ec1844c8abce0aa7f705b921fd5a045f6245677f",
+      "original_manifest_sha256": "9c31ac756797d90f7e22a517ec1844c8abce0aa7f705b921fd5a045f6245677f"
+    },
+    {
+      "path": "src/finsemguard/ontology_discovery/sql_scope_contracts.py",
+      "sha256": "bf1676e2cfac9b32bc4e28f9fb1e3766c68badd7fa911acabd4d4d26b8e2738c",
+      "original_manifest_sha256": "bf1676e2cfac9b32bc4e28f9fb1e3766c68badd7fa911acabd4d4d26b8e2738c"
+    },
+    {
+      "path": "src/finsemguard/ontology_discovery/workload_semantics.py",
+      "sha256": "227de64daf71237ff630443330b723cf6e3b8a703280e504ec5435a70ed7870b",
+      "original_manifest_sha256": "227de64daf71237ff630443330b723cf6e3b8a703280e504ec5435a70ed7870b"
+    },
+    {
+      "path": "src/finsemguard/retrieval/__init__.py",
+      "sha256": "5160eb8164159a9457f28f0b365db213974ca51570eaddc72f10978ef45c680f",
+      "original_manifest_sha256": "5160eb8164159a9457f28f0b365db213974ca51570eaddc72f10978ef45c680f"
+    },
+    {
+      "path": "src/finsemguard/retrieval/bm25.py",
+      "sha256": "73abaec30df2c8d7565c1d335aa692d1720c76c7acc21ac2da69f33c23a8fe37",
+      "original_manifest_sha256": "73abaec30df2c8d7565c1d335aa692d1720c76c7acc21ac2da69f33c23a8fe37"
+    },
+    {
+      "path": "src/finsemguard/retrieval/reranker.py",
+      "sha256": "da43d044d1136fa606edcbc808602e9182fe5467185be44607e4b4af3fc50870",
+      "original_manifest_sha256": "da43d044d1136fa606edcbc808602e9182fe5467185be44607e4b4af3fc50870"
+    },
+    {
+      "path": "src/finsemguard/schema_linking/__init__.py",
+      "sha256": "60d4757df1f12ab67b8e979867d451c24399d101277af66ddf56ca476dd09a64",
+      "original_manifest_sha256": "60d4757df1f12ab67b8e979867d451c24399d101277af66ddf56ca476dd09a64"
+    },
+    {
+      "path": "src/finsemguard/schema_linking/spider2_table_scale.py",
+      "sha256": "1e09e640435b6b248886ba7a57203ee0e55bd206038ce56ede178f6534eed120",
+      "original_manifest_sha256": "1e09e640435b6b248886ba7a57203ee0e55bd206038ce56ede178f6534eed120"
+    },
+    {
+      "path": "src/finsemguard/schema_recovery/__init__.py",
+      "sha256": "73aa1b07166ebe1429d434d58fa5ea379ca78d8642b6f2bda3698d43951e788b",
+      "original_manifest_sha256": "73aa1b07166ebe1429d434d58fa5ea379ca78d8642b6f2bda3698d43951e788b"
+    },
+    {
+      "path": "src/finsemguard/schema_recovery/drspider_assets.py",
+      "sha256": "9a3189d8f0ecc80bb79bb3cfaf4c4e7ce9e2a0a5753b91421f1d0116041754b9",
+      "original_manifest_sha256": "9a3189d8f0ecc80bb79bb3cfaf4c4e7ce9e2a0a5753b91421f1d0116041754b9"
+    },
+    {
+      "path": "src/finsemguard/schema_recovery/joint.py",
+      "sha256": "59077346e6a83196afebfe36fc66d0efd45f4c84ad1810308328dd7a99598991",
+      "original_manifest_sha256": "59077346e6a83196afebfe36fc66d0efd45f4c84ad1810308328dd7a99598991"
+    },
+    {
+      "path": "src/finsemguard/schema_recovery/kaggledbqa_assets.py",
+      "sha256": "484dae2e22320d4ec1da2fbb4baa0de87e875b9d6f91e9f18e18c3d8d203afb6",
+      "original_manifest_sha256": "484dae2e22320d4ec1da2fbb4baa0de87e875b9d6f91e9f18e18c3d8d203afb6"
+    },
+    {
+      "path": "src/finsemguard/schema_recovery/performance_recover.py",
+      "sha256": "88d6767b47ba3e7742fcb66870d98e6ee74f76cad3c2b3a514681919864d7a8f",
+      "original_manifest_sha256": "88d6767b47ba3e7742fcb66870d98e6ee74f76cad3c2b3a514681919864d7a8f"
+    },
+    {
+      "path": "src/finsemguard/schema_recovery/recover.py",
+      "sha256": "a53fe7c50c84f4a41b9be9965b804dedea92f0efe432109e76378f2791770832",
+      "original_manifest_sha256": "a53fe7c50c84f4a41b9be9965b804dedea92f0efe432109e76378f2791770832"
+    }
+  ]
+}

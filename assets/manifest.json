@@ -1,0 +1,37 @@
+{
+  "revision": "v17_iteration05_answer",
+  "archive": "ontology-v17-r05.tar.gz",
+  "archive_sha256": "a29ea5959a009affbae7c7b6e526c00ce88b6811a561477ea46137933a6f3c3d",
+  "files": [
+    {
+      "path": "ontology/construct/district_joint_interpretation.json",
+      "bytes": 45797,
+      "sha256": "28322130916a7c6bb531f822144505bef6217e707612361e95bc3d83c48d9a81"
+    },
+    {
+      "path": "ontology/construct/f1_joint_interpretation.json",
+      "bytes": 21196,
+      "sha256": "5c81a752e06cae976c10824f5ada582a9d241f864593ce43a6f3d1bc11000a74"
+    },
+    {
+      "path": "ontology/semantic_layer/state.json",
+      "bytes": 19480512,
+      "sha256": "dcfdf9f60fdc2381741ce6aae0c33b0b1c2d6a10332b526394c89629a823d7c6"
+    },
+    {
+      "path": "ontology/semantic_memory.json",
+      "bytes": 60671,
+      "sha256": "8acd338e627792351fa68daa44ff0f7fac6735534dca714459bfd739d7e63648"
+    },
+    {
+      "path": "ontology/table_inputs.jsonl",
+      "bytes": 1147371,
+      "sha256": "93c901437d2e58e426ff9f6c3ca1cc45a8b021b38bb35dc27c3976bcdc65703a"
+    },
+    {
+      "path": "ontology/table_recovery.jsonl",
+      "bytes": 161377,
+      "sha256": "8b14c5c6a766f998fc0f3a36b6fd475702ca2230710ddf3de78090ced79f0be4"
+    }
+  ]
+}

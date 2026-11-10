@@ -1,0 +1,13 @@
+project: finsemguard
+seed: 42
+llm:
+  base_url: http://127.0.0.1:8000/v1
+  api_key: ""
+  model: qwen3.8-27b-fp8
+  provider: vllm
+  require_exact_model: true
+  compatibility: vllm
+  temperature: 0.0
+  top_p: 1.0
+  max_output_tokens: 2048
+  request_timeout_seconds: 600

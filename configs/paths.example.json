@@ -1,0 +1,19 @@
+{
+  "dataset_id": "bird",
+  "data_root": "/path/to/prepared/bird-history",
+  "online": "/path/to/prepared/bird-history/online.jsonl",
+  "table_inputs": "data/ontology/table_inputs.jsonl",
+  "recovery": "data/ontology/table_recovery.jsonl",
+  "workload_semantic_state": "data/ontology/semantic_layer/state.json",
+  "semantic_memory": "data/ontology/semantic_memory.json",
+  "anchor_predictions": "/path/to/prepared/bird-history/program_graph_react.jsonl",
+  "auxiliary_raw_predictions": "/path/to/prepared/bird-history/raw_predictions.jsonl",
+  "embedding_model": "/path/to/BAAI/bge-m3",
+  "embedding_cache": "cache/bge-m3.npz",
+  "retrieval_cache": null,
+  "reranker_base_url": "http://127.0.0.1:8001",
+  "config": "configs/v17.yaml",
+  "output_root": "outputs/bird-history",
+  "subset_size": 1393,
+  "concurrency": 8
+}
