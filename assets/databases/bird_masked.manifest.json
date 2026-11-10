@@ -1,0 +1,220 @@
+{
+  "format_version": 1,
+  "dataset_package": "bird_masked",
+  "panels": {
+    "bird_history": 1393,
+    "bird_dev": 1534,
+    "bird_mini": 300
+  },
+  "mask_status": "physical_column_names_masked_table_names_retained",
+  "physical_database_count": 11,
+  "physical_bytes": 1493287936,
+  "path_policy": "Archive paths relative to extracted package root. model_input manifests preserve all source fields, replacing only exact absolute physical database paths with archive paths. source_snapshot retains exact original bytes.",
+  "gold_policy": "evaluator_only is scoring-only. Never expose it or source_snapshot/protocol to model input.",
+  "generation": "No LLM calls, no answer or benchmark audit, no evaluation SQL, no database rebuilding. physical_schema is read-only sqlite_master metadata.",
+  "files": [
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/ontology_react_bird_deepseek_v4_flash_0731_20260809_v1/assets_column100_table0/data/processed/bird_full_dev/dev_databases/california_schools/california_schools.sqlite",
+      "archive_path": "data/processed/bird_full_dev/dev_databases/california_schools/california_schools.sqlite",
+      "size_bytes": 11116544,
+      "sha256": "5c25706795052f4ccc85785a1aca79111fb0844b32a2f9028beb533629a822fa",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/ontology_react_bird_deepseek_v4_flash_0731_20260809_v1/assets_column100_table0/data/processed/bird_full_dev/dev_databases/card_games/card_games.sqlite",
+      "archive_path": "data/processed/bird_full_dev/dev_databases/card_games/card_games.sqlite",
+      "size_bytes": 261820416,
+      "sha256": "88581c02548b9d9bb13de23ba7d68e15ce1d94b610bfdcda4b1137c6ebcc51ee",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/ontology_react_bird_deepseek_v4_flash_0731_20260809_v1/assets_column100_table0/data/processed/bird_full_dev/dev_databases/codebase_community/codebase_community.sqlite",
+      "archive_path": "data/processed/bird_full_dev/dev_databases/codebase_community/codebase_community.sqlite",
+      "size_bytes": 481419264,
+      "sha256": "118d21aa2bf695ead197270fcb98ae2026d8bb4b812e9a9939d271268a2340da",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/ontology_react_bird_deepseek_v4_flash_0731_20260809_v1/assets_column100_table0/data/processed/bird_full_dev/dev_databases/debit_card_specializing/debit_card_specializing.sqlite",
+      "archive_path": "data/processed/bird_full_dev/dev_databases/debit_card_specializing/debit_card_specializing.sqlite",
+      "size_bytes": 34635776,
+      "sha256": "86926420eef4552f495fe407778570f12e7ca55a22ce7ed37770888ba5cd62da",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/ontology_react_bird_deepseek_v4_flash_0731_20260809_v1/assets_column100_table0/data/processed/bird_full_dev/dev_databases/european_football_2/european_football_2.sqlite",
+      "archive_path": "data/processed/bird_full_dev/dev_databases/european_football_2/european_football_2.sqlite",
+      "size_bytes": 597754880,
+      "sha256": "f7207a8c4351415051ef11e417664f1bd020c4085064db3f0323b4f9e984118e",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/ontology_react_bird_deepseek_v4_flash_0731_20260809_v1/assets_column100_table0/data/processed/bird_full_dev/dev_databases/financial/financial.sqlite",
+      "archive_path": "data/processed/bird_full_dev/dev_databases/financial/financial.sqlite",
+      "size_bytes": 71294976,
+      "sha256": "1f8e535bb3330ed9649f8e9d5077a221bd8c4976442e520dbea52b7cbefcf5a5",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/ontology_react_bird_deepseek_v4_flash_0731_20260809_v1/assets_column100_table0/data/processed/bird_full_dev/dev_databases/formula_1/formula_1.sqlite",
+      "archive_path": "data/processed/bird_full_dev/dev_databases/formula_1/formula_1.sqlite",
+      "size_bytes": 22360064,
+      "sha256": "7509945ae914a8a4383b91516d8bfebb0d5bce7def344c909f02b72a6e06282c",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/ontology_react_bird_deepseek_v4_flash_0731_20260809_v1/assets_column100_table0/data/processed/bird_full_dev/dev_databases/student_club/student_club.sqlite",
+      "archive_path": "data/processed/bird_full_dev/dev_databases/student_club/student_club.sqlite",
+      "size_bytes": 2641920,
+      "sha256": "76d86b52f3e30a8eec14ce2d6efb1b575c1cffbed94b95e9fc40ff3888d04617",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/ontology_react_bird_deepseek_v4_flash_0731_20260809_v1/assets_column100_table0/data/processed/bird_full_dev/dev_databases/superhero/superhero.sqlite",
+      "archive_path": "data/processed/bird_full_dev/dev_databases/superhero/superhero.sqlite",
+      "size_bytes": 237568,
+      "sha256": "5d7e24e8cc9c1ec797eb17b2e43f39a16223b1e2b44e7664052aeb316d7d386a",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/ontology_react_bird_deepseek_v4_flash_0731_20260809_v1/assets_column100_table0/data/processed/bird_full_dev/dev_databases/thrombosis_prediction/thrombosis_prediction.sqlite",
+      "archive_path": "data/processed/bird_full_dev/dev_databases/thrombosis_prediction/thrombosis_prediction.sqlite",
+      "size_bytes": 7327744,
+      "sha256": "b884f074726ca829c6254798983a05e40b00a4f8aa8471cf3c4b737e23567cc1",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/ontology_react_bird_deepseek_v4_flash_0731_20260809_v1/assets_column100_table0/data/processed/bird_full_dev/dev_databases/toxicology/toxicology.sqlite",
+      "archive_path": "data/processed/bird_full_dev/dev_databases/toxicology/toxicology.sqlite",
+      "size_bytes": 2678784,
+      "sha256": "a3a2d96ebc40eb196ca5dcafc33ae6872565f4f3e121130b259c04bff570a483",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/bird_history_opaque_20261002/online.jsonl",
+      "archive_path": "source_snapshot/model_input/bird_history_online.jsonl",
+      "size_bytes": 1616354,
+      "sha256": "faf5355de49a94730cabd57a5e6d45043c048b37e3906fa0286252c9e5f01ba0",
+      "role": "model_input_source"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/bird_history_opaque_20261002/history_sql_only.jsonl",
+      "archive_path": "source_snapshot/model_input/bird_history_sql_only.jsonl",
+      "size_bytes": 478508,
+      "sha256": "0a6ceb90944476f414714c5c97a5474d17d939641dcca85249a8d396f370c95c",
+      "role": "model_input_source"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/ontology_react_bird_deepseek_v4_flash_0731_20260809_v1/assets_column100_table0/data/raw/bird_full_dev/dev_tables.json",
+      "archive_path": "source_snapshot/model_input/masked_schema.json",
+      "size_bytes": 144681,
+      "sha256": "a6c6daa8b9553ffe40cb7fea00f74ba963d2d644c64f0a7665331c5b26e3069a",
+      "role": "model_input_source"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery-section16-20261026/results/exp_multibench_20261104/spider_agent_remaining_panels_20261110/bird_dev/QUESTIONS.json",
+      "archive_path": "source_snapshot/model_input/bird_dev_questions.json",
+      "size_bytes": 877758,
+      "sha256": "d1012eae92dc2e001e46ac798a628a3bb736d2636b8c0a6bcc21534ff6c9fe62",
+      "role": "model_input_source"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery-section16-20261026/results/exp_multibench_20261104/spider_agent_remaining_panels_20261110/bird_dev/HISTORY_POOL_PROOF.json",
+      "archive_path": "source_snapshot/model_input/bird_dev_history_pool_proof.json",
+      "size_bytes": 2349,
+      "sha256": "519a707e307dc0551e71f194ddfeb9469a38961a74830ff11196c5b3958e409c",
+      "role": "model_input_source"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery-section16-20261026/results/exp_multibench_20261104/spider_agent_remaining_panels_20261110/bird_mini/QUESTIONS.json",
+      "archive_path": "source_snapshot/model_input/bird_mini_questions.json",
+      "size_bytes": 139579,
+      "sha256": "a1b4f4a48b2d856d869f598ae0b0a4b1218019601ff9e3e3ee92ef5c33d03358",
+      "role": "model_input_source"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery-section16-20261026/results/exp_multibench_20261104/spider_agent_remaining_panels_20261110/bird_mini/HISTORY_POOL_PROOF.json",
+      "archive_path": "source_snapshot/model_input/bird_mini_history_pool_proof.json",
+      "size_bytes": 2350,
+      "sha256": "807ae103f5e80e82296d108a1c062575271e70125ea82744b9c81a94e0b07084",
+      "role": "model_input_source"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/bird_history_opaque_20261002/evaluator_only.jsonl",
+      "archive_path": "evaluator_only/bird_history_gold.jsonl",
+      "size_bytes": 1139469,
+      "sha256": "07febe56275a65dea7d7fe298352fd3368e245cc7404f61746b13214b7c4de01",
+      "role": "evaluator_only_never_model_input"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery-maintenance-20261008/results/v16_iteration_20261009/bird_dev1534_v15_v16_20261009/evaluator_only.jsonl",
+      "archive_path": "evaluator_only/bird_dev_gold.jsonl",
+      "size_bytes": 509974,
+      "sha256": "89e8d78e49dbcb2970f40f9de2f1561ff4cd7c5b4e12168fd10fcbee81970a21",
+      "role": "evaluator_only_never_model_input"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/ontology_react_bird_deepseek_v4_flash_0731_20260809_v1/assets_column100_table0/evaluator_only.jsonl",
+      "archive_path": "evaluator_only/bird_mini_gold.jsonl",
+      "size_bytes": 214545,
+      "sha256": "07094ee17ff36149ddce3f9fcb76116d3f0f9c0aa9f4e48ac9c0d1f75353f2ef",
+      "role": "evaluator_only_never_model_input"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/bird_history_opaque_20261002/DATA_PROTOCOL.json",
+      "archive_path": "source_snapshot/protocol/DATA_PROTOCOL.json",
+      "size_bytes": 7861,
+      "sha256": "3d9bc2ecf19987a7a68bddf9d549ef8c32349973b8491b618f79af6d8eb98471",
+      "role": "provenance"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery-section16-20261026/repro/v17_r05/GENERATION_COMMAND_ORIGINAL.json",
+      "archive_path": "source_snapshot/protocol/frozen_v17_generation_command.json",
+      "size_bytes": 2806,
+      "sha256": "cb2adc724787ea296072d26799d9bf1b32577d6a377f03f2f9e528cd6920daab",
+      "role": "provenance"
+    }
+  ],
+  "generated_files": [
+    {
+      "archive_path": "model_input/physical_schema.json",
+      "size_bytes": 52314,
+      "sha256": "8f323e16f87f4fd9ea6bbf0947c91518931545fbb6fff86707752f19ac8cdff0"
+    },
+    {
+      "archive_path": "model_input/bird_history_online.jsonl",
+      "size_bytes": 1443622,
+      "sha256": "57f8afcd4982daea85ed2cbc874b3ccec1257193e82cc36a7a6e5a61e1d99446"
+    },
+    {
+      "archive_path": "model_input/bird_history_sql_only.jsonl",
+      "size_bytes": 478508,
+      "sha256": "0a6ceb90944476f414714c5c97a5474d17d939641dcca85249a8d396f370c95c"
+    },
+    {
+      "archive_path": "model_input/masked_schema.json",
+      "size_bytes": 144681,
+      "sha256": "a6c6daa8b9553ffe40cb7fea00f74ba963d2d644c64f0a7665331c5b26e3069a"
+    },
+    {
+      "archive_path": "model_input/bird_dev_questions.json",
+      "size_bytes": 687542,
+      "sha256": "63122f1ed460c28a151f9b7d05cba8c235a8f9073c2385d2c5d9bf442591da54"
+    },
+    {
+      "archive_path": "model_input/bird_dev_history_pool_proof.json",
+      "size_bytes": 2349,
+      "sha256": "519a707e307dc0551e71f194ddfeb9469a38961a74830ff11196c5b3958e409c"
+    },
+    {
+      "archive_path": "model_input/bird_mini_questions.json",
+      "size_bytes": 102379,
+      "sha256": "6706c4553befdf11bc00bf023a51016ced193833e5be29c7188f7711de82c9f2"
+    },
+    {
+      "archive_path": "model_input/bird_mini_history_pool_proof.json",
+      "size_bytes": 2350,
+      "sha256": "807ae103f5e80e82296d108a1c062575271e70125ea82744b9c81a94e0b07084"
+    }
+  ]
+}

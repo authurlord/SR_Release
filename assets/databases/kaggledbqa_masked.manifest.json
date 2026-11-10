@@ -1,0 +1,128 @@
+{
+  "format_version": 1,
+  "dataset_package": "kaggledbqa_masked",
+  "panels": {
+    "kaggledbqa": 185
+  },
+  "mask_status": "physical_table_and_column_names_masked",
+  "physical_database_count": 8,
+  "physical_bytes": 394904576,
+  "path_policy": "Archive paths relative to extracted package root. model_input manifests preserve all source fields, replacing only exact absolute physical database paths with archive paths. source_snapshot retains exact original bytes.",
+  "gold_policy": "evaluator_only is scoring-only. Never expose it or source_snapshot/protocol to model input.",
+  "generation": "No LLM calls, no answer or benchmark audit, no evaluation SQL, no database rebuilding. physical_schema is read-only sqlite_master metadata.",
+  "files": [
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/ontology_react_kaggledbqa_deepseek_v4_flash_0731_20260809_v2/assets_opaque100/databases/databases/GeoNuclearData/GeoNuclearData.sqlite",
+      "archive_path": "databases/databases/GeoNuclearData/GeoNuclearData.sqlite",
+      "size_bytes": 122880,
+      "sha256": "cb2eabc2a5086fc6c15a6e34e14e02dcd169cf81a15ee281dcdf2ea74809593c",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/ontology_react_kaggledbqa_deepseek_v4_flash_0731_20260809_v2/assets_opaque100/databases/databases/GreaterManchesterCrime/GreaterManchesterCrime.sqlite",
+      "archive_path": "databases/databases/GreaterManchesterCrime/GreaterManchesterCrime.sqlite",
+      "size_bytes": 847872,
+      "sha256": "250b95f5d839791326bfe4979d70138dec4543792b9bfe6ec53ee7f7895d16d1",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/ontology_react_kaggledbqa_deepseek_v4_flash_0731_20260809_v2/assets_opaque100/databases/databases/Pesticide/Pesticide.sqlite",
+      "archive_path": "databases/databases/Pesticide/Pesticide.sqlite",
+      "size_bytes": 128663552,
+      "sha256": "8b59971352bf89e15ffbfae86b3176ec46b7d214109c31f0fea1ee456cbb1796",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/ontology_react_kaggledbqa_deepseek_v4_flash_0731_20260809_v2/assets_opaque100/databases/databases/StudentMathScore/StudentMathScore.sqlite",
+      "archive_path": "databases/databases/StudentMathScore/StudentMathScore.sqlite",
+      "size_bytes": 905216,
+      "sha256": "aff8f5497ce529cf9095a424fa553544087468401439acbb7612cbaa166270a3",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/ontology_react_kaggledbqa_deepseek_v4_flash_0731_20260809_v2/assets_opaque100/databases/databases/TheHistoryofBaseball/TheHistoryofBaseball.sqlite",
+      "archive_path": "databases/databases/TheHistoryofBaseball/TheHistoryofBaseball.sqlite",
+      "size_bytes": 6389760,
+      "sha256": "8465ed67fd8b062d9cb527158031aaf8348d12803193ed10d5fc62b0b1e20b46",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/ontology_react_kaggledbqa_deepseek_v4_flash_0731_20260809_v2/assets_opaque100/databases/databases/USWildFires/USWildFires.sqlite",
+      "archive_path": "databases/databases/USWildFires/USWildFires.sqlite",
+      "size_bytes": 210923520,
+      "sha256": "284030f6973a0f2990a30094fc24342a7a16a7ef78123a53c502b50795445393",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/ontology_react_kaggledbqa_deepseek_v4_flash_0731_20260809_v2/assets_opaque100/databases/databases/WhatCDHipHop/WhatCDHipHop.sqlite",
+      "archive_path": "databases/databases/WhatCDHipHop/WhatCDHipHop.sqlite",
+      "size_bytes": 10455040,
+      "sha256": "0e0eefaf9decdd49964823f7bd635132bc78d36b3500a849ec0f34a1149953e3",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/ontology_react_kaggledbqa_deepseek_v4_flash_0731_20260809_v2/assets_opaque100/databases/databases/WorldSoccerDataBase/WorldSoccerDataBase.sqlite",
+      "archive_path": "databases/databases/WorldSoccerDataBase/WorldSoccerDataBase.sqlite",
+      "size_bytes": 36596736,
+      "sha256": "16fc45e1f32421a3d9803caaf00dd12bedc8a11adf163fa3e4610491607d6168",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/v15_crossbench_20261007/kaggledbqa/online.jsonl",
+      "archive_path": "source_snapshot/model_input/online.jsonl",
+      "size_bytes": 87113,
+      "sha256": "7f64e2e46b0a89441afd187c1620f7bbab494bc713927286396b7bac74b83841",
+      "role": "model_input_source"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/sql_history_contract_iteration_20261001/kaggledbqa/semantic_layer/history_sql_only.jsonl",
+      "archive_path": "source_snapshot/model_input/history_sql_only.jsonl",
+      "size_bytes": 9048,
+      "sha256": "9515a9c49008e1c5d55151e2bfb9a74016cf7d88be4791837c5a24c71351f328",
+      "role": "model_input_source"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/ontology_react_kaggledbqa_deepseek_v4_flash_0731_20260809_v2/assets_opaque100/KaggleDBQA_tables.json",
+      "archive_path": "source_snapshot/model_input/masked_schema.json",
+      "size_bytes": 59743,
+      "sha256": "11ad0dcfe8f4a4395ffe0c557101232b2167040ab3e89b2096dcb56c03053364",
+      "role": "model_input_source"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/ontology_react_kaggledbqa_deepseek_v4_flash_0731_20260809_v2/assets_opaque100/evaluator_only.jsonl",
+      "archive_path": "evaluator_only/gold.jsonl",
+      "size_bytes": 41711,
+      "sha256": "08dd4391b6a4aa314455fc3a9773112b5cac7c4d9af5ab7362daeed54628456d",
+      "role": "evaluator_only_never_model_input"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/kaggle_v15_adaptation_20261007/PREPARED_MANIFEST.json",
+      "archive_path": "source_snapshot/protocol/PREPARED_MANIFEST.json",
+      "size_bytes": 15111,
+      "sha256": "a1c9788fc65de1aa49e2197c958729c0e9d737d34a2ecdb8af13a90d72e6eeaa",
+      "role": "provenance"
+    }
+  ],
+  "generated_files": [
+    {
+      "archive_path": "model_input/physical_schema.json",
+      "size_bytes": 6469,
+      "sha256": "b21c93d6097dc4c77df74ee6fc3c11774c9aff92cb88536cd596b21534a9d776"
+    },
+    {
+      "archive_path": "model_input/online.jsonl",
+      "size_bytes": 87113,
+      "sha256": "7f64e2e46b0a89441afd187c1620f7bbab494bc713927286396b7bac74b83841"
+    },
+    {
+      "archive_path": "model_input/history_sql_only.jsonl",
+      "size_bytes": 9048,
+      "sha256": "9515a9c49008e1c5d55151e2bfb9a74016cf7d88be4791837c5a24c71351f328"
+    },
+    {
+      "archive_path": "model_input/masked_schema.json",
+      "size_bytes": 59743,
+      "sha256": "11ad0dcfe8f4a4395ffe0c557101232b2167040ab3e89b2096dcb56c03053364"
+    }
+  ]
+}

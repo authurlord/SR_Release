@@ -1,0 +1,18 @@
+{
+  "package": "fiben_masked",
+  "filename": "fiben_masked.tar.gz",
+  "size_bytes": 202146216,
+  "sha256": "f07cdf02cfa2faf50838aebea05120aa6ad4256f3e9a2f7bd2e68e6507e9d648",
+  "physical_database_count": 1,
+  "physical_bytes": 512659456,
+  "panels": {
+    "fiben": 52
+  },
+  "mask_status": "physical_table_and_column_names_masked",
+  "delivery": "quark_uploaded",
+  "local_archive": "/data/workspace/yanmy/SR_Data_Release_Staging/fiben_masked.tar.gz",
+  "quark_path": "/quark/SchemaRecovery/SR_Release/databases/fiben_masked.tar.gz",
+  "upload_status": "task_completed_remote_size_verified",
+  "upload_task_id": "IM8Hl8giQDB6UUfo8HN67",
+  "remote_size_bytes": 202146216
+}

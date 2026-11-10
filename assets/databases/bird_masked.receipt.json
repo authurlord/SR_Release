@@ -1,0 +1,20 @@
+{
+  "package": "bird_masked",
+  "filename": "bird_masked.tar.gz",
+  "size_bytes": 386516161,
+  "sha256": "ade76ae0647400c5ffa7883294d0eeae312045872bc28bf73a4cbedd07de9c53",
+  "physical_database_count": 11,
+  "physical_bytes": 1493287936,
+  "panels": {
+    "bird_history": 1393,
+    "bird_dev": 1534,
+    "bird_mini": 300
+  },
+  "mask_status": "physical_column_names_masked_table_names_retained",
+  "delivery": "quark_uploaded",
+  "local_archive": "/data/workspace/yanmy/SR_Data_Release_Staging/bird_masked.tar.gz",
+  "quark_path": "/quark/SchemaRecovery/SR_Release/databases/bird_masked.tar.gz",
+  "upload_status": "task_completed_remote_size_verified",
+  "upload_task_id": "jMbqG-8rv57kaCnLVxF8n",
+  "remote_size_bytes": 386516161
+}

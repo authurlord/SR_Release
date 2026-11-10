@@ -6,6 +6,7 @@ __pycache__/
 .env.*
 !.env.example
 configs/paths.json
+/configs/*.local.json
 /data/
 /models/
 /outputs/

@@ -24,6 +24,8 @@ ENTRYPOINTS = {
     "bird-prepare": "src/finsemguard/data/bird.py",
     "bird-ontology": "infra/a100/build_bird_history_semantics.py",
     "fiben-prepare": "src/finsemguard/data/fiben.py",
+    "raw": "infra/run_direct_raw_evidence_baseline.py",
+    "bird-score": "infra/evaluate_bird_external.py",
 }
 
 def main() -> None:

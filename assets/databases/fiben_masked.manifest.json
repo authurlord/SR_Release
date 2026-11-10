@@ -1,0 +1,67 @@
+{
+  "format_version": 1,
+  "dataset_package": "fiben_masked",
+  "panels": {
+    "fiben": 52
+  },
+  "mask_status": "physical_table_and_column_names_masked",
+  "physical_database_count": 1,
+  "physical_bytes": 512659456,
+  "path_policy": "Archive paths relative to extracted package root. model_input manifests preserve all source fields, replacing only exact absolute physical database paths with archive paths. source_snapshot retains exact original bytes.",
+  "gold_policy": "evaluator_only is scoring-only. Never expose it or source_snapshot/protocol to model input.",
+  "generation": "No LLM calls, no answer or benchmark audit, no evaluation SQL, no database rebuilding. physical_schema is read-only sqlite_master metadata.",
+  "files": [
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/performance_first_ontology_fiben_deepseek_v4_flash_0731_20260809_v1/assets_opaque100_v1/fiben.sqlite",
+      "archive_path": "fiben.sqlite",
+      "size_bytes": 512659456,
+      "sha256": "03299ee3447c23615a351f549fe3937829fa4f64ed5c457faee0e65c43c22f6d",
+      "role": "physical_database"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/v15_crossbench_20261007/fiben/online.jsonl",
+      "archive_path": "source_snapshot/model_input/online.jsonl",
+      "size_bytes": 20540,
+      "sha256": "799e6986cd8b41ea1712d8067d519e013686a81d4d2f8f99af1aa7f563741108",
+      "role": "model_input_source"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/sql_history_contract_iteration_20261001/fiben/semantic_layer/history_sql_only.jsonl",
+      "archive_path": "source_snapshot/model_input/history_sql_only.jsonl",
+      "size_bytes": 157483,
+      "sha256": "9c37e5901ea7e94630621697cf0db9ac3c8cadb2b58f8fb97c74e7e4ab87e0e7",
+      "role": "model_input_source"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/performance_first_ontology_fiben_deepseek_v4_flash_0731_20260809_v1/assets_opaque100_v1/evaluator_only.jsonl",
+      "archive_path": "evaluator_only/gold.jsonl",
+      "size_bytes": 59062,
+      "sha256": "dd445713d3a0cb2cc7ec97adf509f0032f29817009d6e9dc2086885ed7dacfa6",
+      "role": "evaluator_only_never_model_input"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/fiben_contract_adaptation_20261007/PREPARED_MANIFEST.json",
+      "archive_path": "source_snapshot/protocol/PREPARED_MANIFEST.json",
+      "size_bytes": 9718,
+      "sha256": "ea8d029228b7fa5d66a90a7b913c2569b0d9f72162248621cade263f20bfb9d2",
+      "role": "provenance"
+    }
+  ],
+  "generated_files": [
+    {
+      "archive_path": "model_input/physical_schema.json",
+      "size_bytes": 45468,
+      "sha256": "f04fe896f80f8e248c5ce8dd006775cb313bd143517831d73ac9a0f7e2e1c289"
+    },
+    {
+      "archive_path": "model_input/online.jsonl",
+      "size_bytes": 20540,
+      "sha256": "799e6986cd8b41ea1712d8067d519e013686a81d4d2f8f99af1aa7f563741108"
+    },
+    {
+      "archive_path": "model_input/history_sql_only.jsonl",
+      "size_bytes": 157483,
+      "sha256": "9c37e5901ea7e94630621697cf0db9ac3c8cadb2b58f8fb97c74e7e4ab87e0e7"
+    }
+  ]
+}

@@ -1,0 +1,200 @@
+{
+  "format_version": 1,
+  "package": "intermediates_masked",
+  "policy": "Only necessary upstream Raw/Anchor SQL inputs and source ontology/commands. No final Main predictions, API logs or evaluator gold. Original SQL values preserved.",
+  "files": [
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/bird_history_opaque_20261002/anchor/program_graph_react.jsonl",
+      "source_sha256": "3c47c8b180121f1e781218117b25858e9b1e926945619960dc8d30f249e503d3",
+      "archive_path": "bird_history/anchor.jsonl",
+      "size_bytes": 789684,
+      "sha256": "b10d8ede61aef6ad40a0cadefd2808eaf00de882d54605b8af7f173e0140ef1a",
+      "rows": 1393,
+      "role": "upstream_SQL_only_intermediate",
+      "transformation": "Retain exact example_id and sql values; drop model/API traces and other fields. No SQL evaluation or scoring."
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/bird_history_opaque_20261002/raw_draft/predictions.jsonl",
+      "source_sha256": "8132753f54f0b8b4213acd28310c26fdd230618ed83f3eaf866bca3d5bcf4a72",
+      "archive_path": "bird_history/raw.jsonl",
+      "size_bytes": 771471,
+      "sha256": "46041ba0c378a9821d655a3a1395e6de8c354874eb67e1d593ebea9584ee0687",
+      "rows": 1393,
+      "role": "upstream_SQL_only_intermediate",
+      "transformation": "Retain exact example_id and sql values; drop model/API traces and other fields. No SQL evaluation or scoring."
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/bird_history_opaque_20261002/table_inputs.jsonl",
+      "archive_path": "bird_history/anchor_ontology/table_inputs.jsonl",
+      "size_bytes": 1147371,
+      "sha256": "93c901437d2e58e426ff9f6c3ca1cc45a8b021b38bb35dc27c3976bcdc65703a",
+      "role": "original_Anchor_ontology"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/bird_history_opaque_20261002/table_recovery.jsonl",
+      "archive_path": "bird_history/anchor_ontology/table_recovery.jsonl",
+      "size_bytes": 144464,
+      "sha256": "dec39a2749ac979c2d593a724d4ae583464d1ab202c44a09f1797ef5c8384028",
+      "role": "original_Anchor_ontology"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/bird_history_opaque_20261002/semantic_layer/state.json",
+      "archive_path": "bird_history/anchor_ontology/semantic_layer/state.json",
+      "size_bytes": 13420952,
+      "sha256": "34cace4067a76185e79bdfda81da9123c7cdbb1ba0db0d75ec0cc3f99091119b",
+      "role": "original_Anchor_ontology"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/bird_history_opaque_20261002/anchor_COMMAND.json",
+      "archive_path": "bird_history/provenance/anchor_COMMAND.json",
+      "size_bytes": 1299,
+      "sha256": "bd046d7f1e684c2313a75a903bfccd8ea58b62f16e5718f43b72c984d0c67c54",
+      "role": "original_launch_command"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/bird_history_opaque_20261002/raw_draft_COMMAND.json",
+      "archive_path": "bird_history/provenance/raw_draft_COMMAND.json",
+      "size_bytes": 599,
+      "sha256": "ef938c8a686fafe9be90597062875a1470a7de51466fd9e2430fcede245810a2",
+      "role": "original_launch_command"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/v15_crossbench_20261007/kaggledbqa/anchor.jsonl",
+      "source_sha256": "eb2a45ff5f833cf99de449ca9d34ec085f5e2ebb96450a87858e70ff7c9197d4",
+      "archive_path": "kaggledbqa/anchor.jsonl",
+      "size_bytes": 28199,
+      "sha256": "eb2a45ff5f833cf99de449ca9d34ec085f5e2ebb96450a87858e70ff7c9197d4",
+      "rows": 185,
+      "role": "upstream_SQL_only_intermediate",
+      "transformation": "Retain exact example_id and sql values; drop model/API traces and other fields. No SQL evaluation or scoring."
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/v15_crossbench_20261007/kaggledbqa/raw.jsonl",
+      "source_sha256": "ab1d871fd4a8820efa0f07d0a829aa3213f45bbe8d8091dc38506e12f3362c57",
+      "archive_path": "kaggledbqa/raw.jsonl",
+      "size_bytes": 26829,
+      "sha256": "ab1d871fd4a8820efa0f07d0a829aa3213f45bbe8d8091dc38506e12f3362c57",
+      "rows": 185,
+      "role": "upstream_SQL_only_intermediate",
+      "transformation": "Retain exact example_id and sql values; drop model/API traces and other fields. No SQL evaluation or scoring."
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/ontology_react_kaggledbqa_deepseek_v4_flash_0731_20260809_v2/assets_opaque100/table_inputs.jsonl",
+      "archive_path": "kaggledbqa/ontology/table_inputs.jsonl",
+      "size_bytes": 68778,
+      "sha256": "d97f5c2fdd2cb4f93518aaea8cf370803939f791efbb5f31dcee9120445241c6",
+      "role": "existing_dataset_ontology"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/ontology_react_kaggledbqa_deepseek_v4_flash_0731_20260809_v2/assets_opaque100/table_recovery.jsonl",
+      "archive_path": "kaggledbqa/ontology/table_recovery.jsonl",
+      "size_bytes": 99047,
+      "sha256": "a66a163a2c8ecce397f3477e449b5f3cc2e108bfeaba25c375d3d5f88b89c59b",
+      "role": "existing_dataset_ontology"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/ontology_react_kaggledbqa_deepseek_v4_flash_0731_20260809_v2/assets_opaque100/knowledge.jsonl",
+      "archive_path": "kaggledbqa/ontology/knowledge.jsonl",
+      "size_bytes": 69071,
+      "sha256": "cf27917ea1536e25ce311974fe865a62070b3492c481db200791f90a8e536f33",
+      "role": "existing_dataset_ontology"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/sql_history_contract_iteration_20261001/kaggledbqa/semantic_layer/state.json",
+      "archive_path": "kaggledbqa/ontology/semantic_layer/state.json",
+      "size_bytes": 196611,
+      "sha256": "72ef0e483199dfc4f2d69266d7ce33e823bda1cd5d994ff3aec572c83b4304ab",
+      "role": "existing_dataset_ontology"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery-section16-20261026/results/exp_multibench_20261104/v17_main400/kaggledbqa/semantic_memory.json",
+      "archive_path": "kaggledbqa/provenance/semantic_memory.json",
+      "size_bytes": 7017,
+      "sha256": "2dec1f3fc1ff9f8a27d515ad3a65967d480a52e0265a038d49115c3d9d482dff",
+      "role": "v17_semantic_memory"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery-section16-20261026/results/exp_multibench_20261104/v17_main400/kaggledbqa/COMMAND.json",
+      "archive_path": "kaggledbqa/provenance/COMMAND.json",
+      "size_bytes": 2802,
+      "sha256": "4a75b7c99cb8e68c5834762c4dd3285a4cba0106854fbc9c7c13c3f68aae6006",
+      "role": "frozen_v17_native_protocol"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery-section16-20261026/results/exp_multibench_20261104/v17_main400/kaggledbqa/PLAN.json",
+      "archive_path": "kaggledbqa/provenance/PLAN.json",
+      "size_bytes": 2067,
+      "sha256": "ffdcc62f8a5ca9c3521219f9b49a266f57fd76017e8e87fd6f5c97ce3162d67b",
+      "role": "frozen_v17_native_protocol"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/v15_crossbench_20261007/fiben/anchor.jsonl",
+      "source_sha256": "d26614e20b92c9028cafae511336abe6b3297c40c716354564c657c897c79adb",
+      "archive_path": "fiben/anchor.jsonl",
+      "size_bytes": 34891,
+      "sha256": "d26614e20b92c9028cafae511336abe6b3297c40c716354564c657c897c79adb",
+      "rows": 52,
+      "role": "upstream_SQL_only_intermediate",
+      "transformation": "Retain exact example_id and sql values; drop model/API traces and other fields. No SQL evaluation or scoring."
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/v15_crossbench_20261007/fiben/raw.jsonl",
+      "source_sha256": "4a14354d6c33f22186393b55550422f219e4cf370c3abd20bd3c387f6292213b",
+      "archive_path": "fiben/raw.jsonl",
+      "size_bytes": 45575,
+      "sha256": "4a14354d6c33f22186393b55550422f219e4cf370c3abd20bd3c387f6292213b",
+      "rows": 52,
+      "role": "upstream_SQL_only_intermediate",
+      "transformation": "Retain exact example_id and sql values; drop model/API traces and other fields. No SQL evaluation or scoring."
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/performance_first_ontology_fiben_deepseek_v4_flash_0731_20260809_v1/assets_opaque100_v1/table_inputs.jsonl",
+      "archive_path": "fiben/ontology/table_inputs.jsonl",
+      "size_bytes": 309071,
+      "sha256": "961ed9bc8cd7f086846691b439a0e944ce8af02c3cf2cfbf2f259dcb195a9e26",
+      "role": "existing_dataset_ontology"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/performance_first_ontology_fiben_deepseek_v4_flash_0731_20260809_v1/assets_opaque100_v1/table_recovery.jsonl",
+      "archive_path": "fiben/ontology/table_recovery.jsonl",
+      "size_bytes": 150871,
+      "sha256": "eda062bc888e05ff04d8b78678ec0b7f373cef28874f4c2cd9e54934b33bfe95",
+      "role": "existing_dataset_ontology"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/archive/superseded_result_experiments_pre_20260821/performance_first_ontology_fiben_deepseek_v4_flash_0731_20260809_v1/assets_opaque100_v1/knowledge.jsonl",
+      "archive_path": "fiben/ontology/knowledge.jsonl",
+      "size_bytes": 442048,
+      "sha256": "0a0e58880387b6647e847110cd783bb63e87a79a2c867339480ea68a6f3e6a8f",
+      "role": "existing_dataset_ontology"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery/results/sql_history_contract_iteration_20261001/fiben/semantic_layer/state.json",
+      "archive_path": "fiben/ontology/semantic_layer/state.json",
+      "size_bytes": 4035276,
+      "sha256": "8a8884fff4944a307a9e89b84c70ed610fae6bd44cdd0abc0988d65cc58a59a5",
+      "role": "existing_dataset_ontology"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery-section16-20261026/results/exp_multibench_20261104/v17_main400/fiben/semantic_memory.json",
+      "archive_path": "fiben/provenance/semantic_memory.json",
+      "size_bytes": 7190,
+      "sha256": "13e61b251b7f3b53f8b3880be75db18f51e624a6665273390ea360edbc2c9af2",
+      "role": "v17_semantic_memory"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery-section16-20261026/results/exp_multibench_20261104/v17_main400/fiben/COMMAND.json",
+      "archive_path": "fiben/provenance/COMMAND.json",
+      "size_bytes": 2796,
+      "sha256": "064ccb7f5fb0d08582a3e2e38e07afe8019c835ddd32da358f8ec321273bfe1a",
+      "role": "frozen_v17_native_protocol"
+    },
+    {
+      "source_path": "/data/workspace/yanmy/SchemaRecovery-section16-20261026/results/exp_multibench_20261104/v17_main400/fiben/PLAN.json",
+      "archive_path": "fiben/provenance/PLAN.json",
+      "size_bytes": 2091,
+      "sha256": "f396c31c9c2db77c5b6d9af9e8c522a04d9111268d70f9a1a980d2d419f18c4f",
+      "role": "frozen_v17_native_protocol"
+    }
+  ]
+}

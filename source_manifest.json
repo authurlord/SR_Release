@@ -8,6 +8,11 @@
       "original_manifest_sha256": "2b42546fe90609500bfd0f9797d9b9cc956afb21a96ec39a0763db7e208e648c"
     },
     {
+      "path": "infra/evaluate_bird_external.py",
+      "sha256": "29d06a422cfaf9b4610304e076b9a3805e31343eb75ae53565018a883796648b",
+      "original_manifest_sha256": "29d06a422cfaf9b4610304e076b9a3805e31343eb75ae53565018a883796648b"
+    },
+    {
       "path": "infra/materialize_beaver_sqlite_snapshots.py",
       "sha256": "361e90f9c6dcc358187c0e419f3970cb7405cae6ba92f0f16d9f2f990128dea7",
       "original_manifest_sha256": "361e90f9c6dcc358187c0e419f3970cb7405cae6ba92f0f16d9f2f990128dea7"
@@ -48,6 +53,11 @@
       "original_manifest_sha256": "eb426cd3b711f4211d765ab1c5e5ed54fbb5eeb458c157d05449b1a7f8eff47e"
     },
     {
+      "path": "infra/run_direct_raw_evidence_baseline.py",
+      "sha256": "931518c8f9802a9b4d687bca421c531ed97210a5835cdb035b4058d561ee22ed",
+      "original_manifest_sha256": "931518c8f9802a9b4d687bca421c531ed97210a5835cdb035b4058d561ee22ed"
+    },
+    {
       "path": "infra/run_evoschema_main.py",
       "sha256": "9da785dec81deecde067fae026a0011353c9b22af49a7262c64faa64d933bfa8",
       "original_manifest_sha256": "9da785dec81deecde067fae026a0011353c9b22af49a7262c64faa64d933bfa8"
@@ -78,6 +88,11 @@
       "original_manifest_sha256": "f9d44e35476af6b171a2ff26ea51966f5c9ad4165bdc40cbeff9186646279b5e"
     },
     {
+      "path": "src/finsemguard/agent/bird_demo.py",
+      "sha256": "93a4c36823f3bbc6d743c49878c3969e3d6303d2e1a235edb6d79e73ace6cd0e",
+      "original_manifest_sha256": "93a4c36823f3bbc6d743c49878c3969e3d6303d2e1a235edb6d79e73ace6cd0e"
+    },
+    {
       "path": "src/finsemguard/agent/llm.py",
       "sha256": "db5ec792eb2e68f62de669de901a7b761aea1b822f204834980942b722bae4c5",
       "original_manifest_sha256": "db5ec792eb2e68f62de669de901a7b761aea1b822f204834980942b722bae4c5"
@@ -96,6 +111,16 @@
       "path": "src/finsemguard/config.py",
       "sha256": "753c2575e8e44359529a1a287ab364d50dfe4d1652c407ba0b092eab54e09e96",
       "original_manifest_sha256": "753c2575e8e44359529a1a287ab364d50dfe4d1652c407ba0b092eab54e09e96"
+    },
+    {
+      "path": "src/finsemguard/contracts/__init__.py",
+      "sha256": "eac50831b6c663a32dd99ab099b632816ad0f37709c893cfcc68e9a43fb9f3df",
+      "original_manifest_sha256": "eac50831b6c663a32dd99ab099b632816ad0f37709c893cfcc68e9a43fb9f3df"
+    },
+    {
+      "path": "src/finsemguard/contracts/schema.py",
+      "sha256": "57367af1934a0dc9ec1cb9a829c54b81d437b7244a9cde6a3d6dcb039116cc51",
+      "original_manifest_sha256": "57367af1934a0dc9ec1cb9a829c54b81d437b7244a9cde6a3d6dcb039116cc51"
     },
     {
       "path": "src/finsemguard/data/__init__.py",
@@ -278,6 +303,16 @@
       "original_manifest_sha256": "eb3ce97106ddef57efb34b360efc7e3f272616424fe7e50ff63c65d1063b731b"
     },
     {
+      "path": "src/finsemguard/eval/__init__.py",
+      "sha256": "025c253c9fcc6f28f02516a51e48769796b640f15bdcdab935c4e66007ea5265",
+      "original_manifest_sha256": "025c253c9fcc6f28f02516a51e48769796b640f15bdcdab935c4e66007ea5265"
+    },
+    {
+      "path": "src/finsemguard/eval/bird.py",
+      "sha256": "0b2cd33dda94d0394e9a78b25a92f997b9b0f6518fcdb6c8bbb9cdff59cb5063",
+      "original_manifest_sha256": "0b2cd33dda94d0394e9a78b25a92f997b9b0f6518fcdb6c8bbb9cdff59cb5063"
+    },
+    {
       "path": "src/finsemguard/ontology_discovery/__init__.py",
       "sha256": "abd717e3046a831e123d8c7367183d60cc5c421ac83d0526b19bb1b09f8004ec",
       "original_manifest_sha256": "abd717e3046a831e123d8c7367183d60cc5c421ac83d0526b19bb1b09f8004ec"
@@ -351,6 +386,16 @@
       "path": "src/finsemguard/schema_recovery/recover.py",
       "sha256": "a53fe7c50c84f4a41b9be9965b804dedea92f0efe432109e76378f2791770832",
       "original_manifest_sha256": "a53fe7c50c84f4a41b9be9965b804dedea92f0efe432109e76378f2791770832"
+    },
+    {
+      "path": "src/finsemguard/sql/__init__.py",
+      "sha256": "31f733434ec60d92036af88bee7075d376b7681d33645b2fd774e2e1e9d7be7d",
+      "original_manifest_sha256": "31f733434ec60d92036af88bee7075d376b7681d33645b2fd774e2e1e9d7be7d"
+    },
+    {
+      "path": "src/finsemguard/sql/safety.py",
+      "sha256": "2108eb2bc10e85afd2391b1914300154bbaf615beb9ba8f96a24c4fa66099b29",
+      "original_manifest_sha256": "2108eb2bc10e85afd2391b1914300154bbaf615beb9ba8f96a24c4fa66099b29"
     }
   ]
 }

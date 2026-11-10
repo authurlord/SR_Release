@@ -1,0 +1,8 @@
+{
+  "package": "intermediates_masked",
+  "filename": "intermediates_masked.tar.gz",
+  "size_bytes": 1673705,
+  "sha256": "328abd817d949c52375854419fcac32af14c0a91b59aa7de5c3ee065b859e0d7",
+  "delivery": "git",
+  "final_Main_predictions_included": false
+}

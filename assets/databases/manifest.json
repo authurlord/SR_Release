@@ -1,0 +1,197 @@
+{
+  "format_version": 1,
+  "git_size_threshold_bytes": 100000000,
+  "packages": [
+    {
+      "package": "bird_masked",
+      "filename": "bird_masked.tar.gz",
+      "size_bytes": 386516161,
+      "sha256": "ade76ae0647400c5ffa7883294d0eeae312045872bc28bf73a4cbedd07de9c53",
+      "physical_database_count": 11,
+      "physical_bytes": 1493287936,
+      "panels": {
+        "bird_history": 1393,
+        "bird_dev": 1534,
+        "bird_mini": 300
+      },
+      "mask_status": "physical_column_names_masked_table_names_retained",
+      "delivery": "quark_uploaded",
+      "local_archive": "/data/workspace/yanmy/SR_Data_Release_Staging/bird_masked.tar.gz",
+      "quark_path": "/quark/SchemaRecovery/SR_Release/databases/bird_masked.tar.gz",
+      "upload_status": "task_completed_remote_size_verified",
+      "upload_task_id": "jMbqG-8rv57kaCnLVxF8n",
+      "remote_size_bytes": 386516161
+    },
+    {
+      "package": "fiben_masked",
+      "filename": "fiben_masked.tar.gz",
+      "size_bytes": 202146216,
+      "sha256": "f07cdf02cfa2faf50838aebea05120aa6ad4256f3e9a2f7bd2e68e6507e9d648",
+      "physical_database_count": 1,
+      "physical_bytes": 512659456,
+      "panels": {
+        "fiben": 52
+      },
+      "mask_status": "physical_table_and_column_names_masked",
+      "delivery": "quark_uploaded",
+      "local_archive": "/data/workspace/yanmy/SR_Data_Release_Staging/fiben_masked.tar.gz",
+      "quark_path": "/quark/SchemaRecovery/SR_Release/databases/fiben_masked.tar.gz",
+      "upload_status": "task_completed_remote_size_verified",
+      "upload_task_id": "IM8Hl8giQDB6UUfo8HN67",
+      "remote_size_bytes": 202146216
+    },
+    {
+      "package": "intermediates_masked",
+      "filename": "intermediates_masked.tar.gz",
+      "size_bytes": 1673705,
+      "sha256": "328abd817d949c52375854419fcac32af14c0a91b59aa7de5c3ee065b859e0d7",
+      "delivery": "git",
+      "final_Main_predictions_included": false
+    },
+    {
+      "package": "kaggledbqa_masked",
+      "filename": "kaggledbqa_masked.tar.gz",
+      "size_bytes": 99210635,
+      "sha256": "b3dd32b5c2863ee3bcee8e1e862531c468b50ef1f9996eb95966ad918ad68e0e",
+      "physical_database_count": 8,
+      "physical_bytes": 394904576,
+      "panels": {
+        "kaggledbqa": 185
+      },
+      "mask_status": "physical_table_and_column_names_masked",
+      "delivery": "git",
+      "local_archive": "/data/workspace/yanmy/SR_Data_Release_Staging/kaggledbqa_masked.tar.gz"
+    }
+  ],
+  "datasets": [
+    {
+      "dataset": "bird_history",
+      "fixed_N": 1393,
+      "package": "bird_masked",
+      "delivery": "quark_uploaded",
+      "filename": "bird_masked.tar.gz",
+      "size_bytes": 386516161,
+      "sha256": "ade76ae0647400c5ffa7883294d0eeae312045872bc28bf73a4cbedd07de9c53",
+      "quark_path": "/quark/SchemaRecovery/SR_Release/databases/bird_masked.tar.gz",
+      "mask_status": "physical_column_names_masked_table_names_retained",
+      "online_path": "model_input/bird_history_online.jsonl",
+      "evaluator_only_path": "evaluator_only/bird_history_gold.jsonl",
+      "schema_path": "model_input/physical_schema.json",
+      "official_sources": [
+        "https://bird-bench.github.io/"
+      ]
+    },
+    {
+      "dataset": "bird_dev",
+      "fixed_N": 1534,
+      "package": "bird_masked",
+      "delivery": "quark_uploaded",
+      "filename": "bird_masked.tar.gz",
+      "size_bytes": 386516161,
+      "sha256": "ade76ae0647400c5ffa7883294d0eeae312045872bc28bf73a4cbedd07de9c53",
+      "quark_path": "/quark/SchemaRecovery/SR_Release/databases/bird_masked.tar.gz",
+      "mask_status": "physical_column_names_masked_table_names_retained",
+      "online_path": "model_input/bird_dev_questions.json",
+      "evaluator_only_path": "evaluator_only/bird_dev_gold.jsonl",
+      "schema_path": "model_input/physical_schema.json",
+      "official_sources": [
+        "https://bird-bench.github.io/"
+      ]
+    },
+    {
+      "dataset": "bird_mini",
+      "fixed_N": 300,
+      "package": "bird_masked",
+      "delivery": "quark_uploaded",
+      "filename": "bird_masked.tar.gz",
+      "size_bytes": 386516161,
+      "sha256": "ade76ae0647400c5ffa7883294d0eeae312045872bc28bf73a4cbedd07de9c53",
+      "quark_path": "/quark/SchemaRecovery/SR_Release/databases/bird_masked.tar.gz",
+      "mask_status": "physical_column_names_masked_table_names_retained",
+      "online_path": "model_input/bird_mini_questions.json",
+      "evaluator_only_path": "evaluator_only/bird_mini_gold.jsonl",
+      "schema_path": "model_input/physical_schema.json",
+      "official_sources": [
+        "https://bird-bench.github.io/"
+      ]
+    },
+    {
+      "dataset": "kaggledbqa",
+      "fixed_N": 185,
+      "package": "kaggledbqa_masked",
+      "delivery": "git",
+      "filename": "kaggledbqa_masked.tar.gz",
+      "size_bytes": 99210635,
+      "sha256": "b3dd32b5c2863ee3bcee8e1e862531c468b50ef1f9996eb95966ad918ad68e0e",
+      "quark_path": null,
+      "mask_status": "physical_table_and_column_names_masked",
+      "online_path": "model_input/online.jsonl",
+      "evaluator_only_path": "evaluator_only/gold.jsonl",
+      "schema_path": "model_input/physical_schema.json",
+      "official_sources": [
+        "https://github.com/Chia-Hsuan-Lee/KaggleDBQA"
+      ]
+    },
+    {
+      "dataset": "fiben",
+      "fixed_N": 52,
+      "package": "fiben_masked",
+      "delivery": "quark_uploaded",
+      "filename": "fiben_masked.tar.gz",
+      "size_bytes": 202146216,
+      "sha256": "f07cdf02cfa2faf50838aebea05120aa6ad4256f3e9a2f7bd2e68e6507e9d648",
+      "quark_path": "/quark/SchemaRecovery/SR_Release/databases/fiben_masked.tar.gz",
+      "mask_status": "physical_table_and_column_names_masked",
+      "online_path": "model_input/online.jsonl",
+      "evaluator_only_path": "evaluator_only/gold.jsonl",
+      "schema_path": "model_input/physical_schema.json",
+      "official_sources": [
+        "https://github.com/IBM/fiben-benchmark"
+      ]
+    },
+    {
+      "dataset": "evoschema",
+      "fixed_N": 295,
+      "delivery": "unpackaged_original_physical_names",
+      "mask_status": "original_experiment_physical_names_no_replacement_masking_performed",
+      "physical_database_count": 295,
+      "physical_bytes": 47237858304,
+      "reason": "The located original experimental protocol exposes physical identifiers. It is excluded from this masked-only release; no new masked data is substituted for the old experiment.",
+      "official_sources": [
+        "https://bird-bench.github.io/"
+      ],
+      "source_note": "EvoSchema local evolved BIRD snapshots; listed link is underlying BIRD source, not a separate official EvoSchema distribution."
+    },
+    {
+      "dataset": "beaver",
+      "fixed_N": 500,
+      "delivery": "unpackaged_original_physical_names",
+      "mask_status": "original_experiment_physical_names_no_replacement_masking_performed",
+      "physical_database_count": null,
+      "physical_bytes": null,
+      "reason": "The located original experimental protocol exposes physical identifiers. It is excluded from this masked-only release; no new masked data is substituted for the old experiment.",
+      "official_sources": [
+        "https://beaverbench.github.io/",
+        "https://huggingface.co/datasets/beaverbench/beaver-table/blob/main/beaver_db.zip"
+      ],
+      "source_note": "Official upstream source; downloads do not replace the frozen original local snapshot."
+    },
+    {
+      "dataset": "spider2",
+      "fixed_N": 135,
+      "delivery": "unpackaged_original_physical_names",
+      "mask_status": "original_experiment_physical_names_no_replacement_masking_performed",
+      "physical_database_count": 30,
+      "physical_bytes": 1676862464,
+      "reason": "The located original experimental protocol exposes physical identifiers. It is excluded from this masked-only release; no new masked data is substituted for the old experiment.",
+      "official_sources": [
+        "https://spider2-sql.github.io/",
+        "https://github.com/xlang-ai/Spider2"
+      ],
+      "source_note": "Official upstream source; downloads do not replace the frozen original local snapshot."
+    }
+  ],
+  "intermediates": "intermediates_masked.tar.gz",
+  "runtime_path_rebinding": "Resolve relative database_or_answer_target against extracted package root; replace schema_manifest with model_input/masked_schema.json when a driver requires an absolute existing path. Do not change SQL, question or IDs.",
+  "validation": "validation.json verifies every archived payload SHA256 against package manifest without SQL execution or model calls."
+}

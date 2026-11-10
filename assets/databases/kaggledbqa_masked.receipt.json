@@ -1,0 +1,14 @@
+{
+  "package": "kaggledbqa_masked",
+  "filename": "kaggledbqa_masked.tar.gz",
+  "size_bytes": 99210635,
+  "sha256": "b3dd32b5c2863ee3bcee8e1e862531c468b50ef1f9996eb95966ad918ad68e0e",
+  "physical_database_count": 8,
+  "physical_bytes": 394904576,
+  "panels": {
+    "kaggledbqa": 185
+  },
+  "mask_status": "physical_table_and_column_names_masked",
+  "delivery": "git",
+  "local_archive": "/data/workspace/yanmy/SR_Data_Release_Staging/kaggledbqa_masked.tar.gz"
+}

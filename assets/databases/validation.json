@@ -1,0 +1,30 @@
+[
+  {
+    "package": "kaggledbqa_masked",
+    "archive_entries_verified": 17,
+    "all_file_sha256_verified": true,
+    "SQL_executed": false,
+    "model_calls": 0
+  },
+  {
+    "package": "fiben_masked",
+    "archive_entries_verified": 8,
+    "all_file_sha256_verified": true,
+    "SQL_executed": false,
+    "model_calls": 0
+  },
+  {
+    "package": "bird_masked",
+    "archive_entries_verified": 31,
+    "all_file_sha256_verified": true,
+    "SQL_executed": false,
+    "model_calls": 0
+  },
+  {
+    "package": "intermediates_masked",
+    "archive_entries_verified": 25,
+    "all_file_sha256_verified": true,
+    "SQL_executed": false,
+    "model_calls": 0
+  }
+]
