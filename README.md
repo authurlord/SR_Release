@@ -1,3 +1,5 @@
+**[Live Demo →](https://authurlord.github.io/SR_Release/)**
+
 # SchemaRecovery: Building and Maintaining Database Semantic Layers from SQL Histories
 
 [English](README.md) | [简体中文](README.zh-CN.md)
