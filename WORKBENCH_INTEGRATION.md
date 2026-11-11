@@ -14,7 +14,7 @@ The current workbench layout and stylesheet are retained. `dist/archive-adapter.
 | Spider 2.0-Lite | 30 | 135 |
 | Total | 370 | 4394 |
 
-Navigation starts with successful saved questions. The result filter also exposes all questions, failures, and unscored records. SQL, official score status, tool observations, retrieval context, model usage, and saved execution rows remain attached to each question's archive file.
+Navigation starts with successful saved questions and databases containing successful cases. The result filter also exposes all questions, failures, and unscored records. SQL, official score status, tool observations, retrieval context, model usage, and saved execution rows remain attached to each question's archive file.
 
 Construct replays the saved source contributions, recovered names, semantic objects, column families, and join evidence. Update replays available maintenance events and their before/after names and dependency closure. Chinese and English schema guides load per DB. A DB without a saved update event shows an empty update view.
 
@@ -23,6 +23,9 @@ Archive navigation loads the index once, then loads the selected DB and question
 ```sh
 python3 scripts/build_workbench_index.py
 node tests/workbench_archive.cjs
+python3 scripts/build_pages.py --output /path/to/empty/pages-site
 ```
 
 The branch is `feat/full-archive-integration`; the saved visual baseline is commit `8ed9633` on `main`. Data directories remain local alongside the tracked source files. This integration uses CPU and saved JSON; it makes no model calls or database queries. The existing native local API remains a separate service on port 8765; this archive adapter does not start live runs.
+
+The static site is published from the `gh-pages` branch of `authurlord/SR_Release` at https://authurlord.github.io/SR_Release/. The build keeps all saved cases and evidence, minifies JSON whitespace, and bundles the styling runtime locally.

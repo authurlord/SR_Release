@@ -19,6 +19,7 @@
   const statusLabel = status => ({success:'成功', failure:'失败', unknown:'未评分'}[status] || '未评分');
   const group = () => S.index?.datasets.find(x => x.id === currentDatasetKey);
   const visibleCases = () => (S.entry?.cases || []).filter(x => S.filter === 'all' || (x.result_status || 'unknown') === S.filter);
+  const visibleDatabases = () => (group()?.databases || []).filter(d => S.filter === 'all' || d.cases.some(c => (c.result_status || 'unknown') === S.filter));
   const activeClass = 'ds-tab-btn flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-indigo-600 text-white shadow-sm transition';
   const idleClass = 'ds-tab-btn flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition';
   function stop() { clearTimeout(S.timer); S.timer = null; }
@@ -63,9 +64,9 @@
   };
   window.renderDbList = function() {
     if (!group()) return;
-    const entries = group().databases;
-    $('db-count-badge').textContent = `${entries.length} 个 DB/schema`;
-    $('db-list-container').innerHTML = entries.map((d, i) => `<button type="button" data-db-index="${i}" class="p-2 rounded-lg border cursor-pointer transition text-left ${d.id === currentDbKey ? 'bg-indigo-950/40 border-indigo-500/80 shadow-md' : 'bg-[var(--surface)] border-[var(--border)] hover:border-slate-700'}"><div class="font-mono text-xs font-bold text-indigo-300 truncate">${esc(d.id)}</div><div class="text-[10px] text-slate-400">${d.table_count} 表 · ${d.object_count} 对象 · ${d.history_sql_count} SQL · ${d.cases.length} 题</div></button>`).join('');
+    const entries = visibleDatabases();
+    $('db-count-badge').textContent = `${entries.length} / ${group().databases.length} 个 DB/schema`;
+    $('db-list-container').innerHTML = entries.map((d, i) => `<button type="button" data-db-index="${i}" class="p-2 rounded-lg border cursor-pointer transition text-left ${d.id === currentDbKey ? 'bg-indigo-950/40 border-indigo-500/80 shadow-md' : 'bg-[var(--surface)] border-[var(--border)] hover:border-slate-700'}"><div class="font-mono text-xs font-bold text-indigo-300 truncate">${esc(d.id)}</div><div class="text-[10px] text-slate-400">${d.table_count} 表 · ${d.object_count} 对象 · ${d.history_sql_count} SQL · ${S.filter === 'all' ? d.cases.length : d.result_counts[S.filter] || 0} 题${S.filter === 'all' ? '' : ' · ' + statusLabel(S.filter)}</div></button>`).join('');
     $('db-list-container').querySelectorAll('[data-db-index]').forEach(b => b.onclick = () => selectDatabase(entries[Number(b.dataset.dbIndex)].id).catch(fail));
   };
   window.selectDataset = async function(key) {
@@ -225,7 +226,13 @@
     select.disabled = !cases.length;
     if (S.caseMeta && cases.some(c => c.id === S.caseMeta.id)) select.value = S.caseMeta.id;
   }
-  async function setFilter(value) { S.filter = value; renderQuestionSelector(); const first = visibleCases()[0]; if (first) await selectCase(first.id); else { ++S.queryEpoch; stop(); S.case = S.caseMeta = null; S.frames = []; S.cursor = 0; clearAnswer('当前筛选下没有问题；可切换为“全部”'); renderTrajectoryForDb(); } }
+  async function setFilter(value) {
+    S.filter = value; renderDbList(); renderQuestionSelector();
+    const first = visibleCases()[0];
+    if (first) await selectCase(first.id);
+    else if (visibleDatabases().length) await selectDatabase(visibleDatabases()[0].id);
+    else { ++S.queryEpoch; stop(); S.case = S.caseMeta = null; S.frames = []; S.cursor = 0; clearAnswer('当前筛选下没有问题；可切换为“全部”'); renderTrajectoryForDb(); }
+  }
   async function moveCase(delta) { const cases = visibleCases(); const i = cases.findIndex(c => c.id === S.caseMeta?.id); if (cases.length) await selectCase(cases[(i + delta + cases.length) % cases.length].id); }
   window.loadPresetQuestion = id => moveCase(id === 1 ? -1 : 1).catch(fail);
   async function selectCase(id) {

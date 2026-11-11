@@ -43,7 +43,8 @@ async function main() {
     await window.selectDataset(dataset.id);
     const s = window.SRArchive.state;
     assert.equal(s.db.database, s.entry.id);
-    assert.equal(window.document.querySelectorAll('[data-db-index]').length, dataset.databases.length);
+    assert.equal(window.document.querySelectorAll('[data-db-index]').length, dataset.databases.filter(d => d.result_counts.success).length);
+    assert(window.SRArchive.visibleCases().every(c => c.result_status === 'success'));
     assert.equal(s.case.dataset, dataset.id);
     assert.equal(s.caseMeta.result_status, 'success');
     assert.equal($('answer-sql-code').textContent, s.case.prediction.sql || '保存的 SQL 为空');
@@ -52,6 +53,7 @@ async function main() {
     assert.equal(window.SRArchive.state.cursor, window.SRArchive.state.frames.length);
     assert.equal($('contract-status-badge').textContent, '成功');
     await window.SRArchive.setFilter('all');
+    assert.equal(window.document.querySelectorAll('[data-db-index]').length, dataset.databases.length);
     const last = window.SRArchive.visibleCases().at(-1);
     await window.SRArchive.selectCase(last.id);
     assert.equal($('contract-status-badge').textContent, ({success:'成功',failure:'失败',unknown:'未评分'})[last.result_status || 'unknown']);
