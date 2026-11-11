@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SchemaRecovery 交互式演进工作台 Demo</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #0f172a;
+      --card-hover: #162238;
+      --surface: #131c2e;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.16);
+      --accent: #6366f1;
+      --accent-soft: rgba(99, 102, 241, 0.15);
+      --green: #10b981;
+      --green-soft: rgba(16, 185, 129, 0.15);
+      --amber: #f59e0b;
+      --amber-soft: rgba(245, 158, 11, 0.15);
+      --red: #ef4444;
+      --red-soft: rgba(239, 68, 68, 0.15);
+      --purple: #a855f7;
+      --purple-soft: rgba(168, 85, 247, 0.15);
+      --font-mono: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      background-color: var(--bg);
+      color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      font-size: 13px;
+    }
+    .mono { font-family: var(--font-mono); }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+
+    .glow-indigo { box-shadow: 0 0 16px rgba(99, 102, 241, 0.35); }
+    .glow-green { box-shadow: 0 0 16px rgba(16, 185, 129, 0.35); }
+    .glow-amber { box-shadow: 0 0 16px rgba(245, 158, 11, 0.35); }
+    .pill { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 500; }
+    .pill-green { background: var(--green-soft); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .pill-amber { background: var(--amber-soft); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .pill-red { background: var(--red-soft); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .pill-indigo { background: var(--accent-soft); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.4); }
+    .pill-purple { background: var(--purple-soft); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.4); }
+  </style>
+</head>
+<body class="select-none">
+
+  <!-- ================= TOP HEADER (第 1 级：数据集选择 + 模块流水线) ================= -->
+  <header class="h-[54px] bg-[var(--surface)] border-b border-[var(--border)] px-4 flex items-center justify-between flex-shrink-0 z-30">
+    <!-- Brand & Level 1: Dataset Selector -->
+    <div class="flex items-center gap-5">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
+          SR
+        </div>
+        <div class="font-bold text-sm tracking-tight text-white flex items-center gap-1.5">
+          SchemaRecovery
+          <span class="pill pill-indigo text-[10px] py-0 px-1.5">v2.5</span>
+        </div>
+      </div>
+
+      <div class="h-5 w-px bg-slate-700/60"></div>
+
+      <!-- 第一级：顶栏【数据集选择 (Dataset)】 -->
+      <div class="flex items-center gap-1.5">
+        <span class="text-[11px] font-bold text-slate-400 mr-1 flex items-center gap-1">
+          📁 数据集:
+        </span>
+        <button id="ds-bird" onclick="selectDataset('bird')" class="ds-tab-btn flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-indigo-600 text-white shadow-sm transition">
+          <span>🏆 BIRD-History (1393)</span>
+        </button>
+        <button id="ds-spider" onclick="selectDataset('spider')" class="ds-tab-btn flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition">
+          <span>🕷️ Spider 2.0-Lite (135)</span>
+        </button>
+        <button id="ds-beaver" onclick="selectDataset('beaver')" class="ds-tab-btn flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition">
+          <span>🦫 Beaver (350)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Central Pipeline Stepper: Construct -> Answer -> Update -->
+    <nav class="flex items-center gap-2 bg-[var(--card)] px-3 py-1.5 rounded-full border border-[var(--border)] shadow-inner">
+      <button id="nav-construct" onclick="switchStage('construct')" class="stage-nav-btn flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-600 text-white shadow-sm transition-all">
+        <span class="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[10px]">1</span>
+        <span>Construct 构建</span>
+      </button>
+      <span class="text-slate-500 text-xs">──></span>
+      <button id="nav-answer" onclick="switchStage('answer')" class="stage-nav-btn flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-slate-400 hover:text-white transition-all">
+        <span class="w-4 h-4 rounded-full bg-slate-700 flex items-center justify-center text-[10px]">2</span>
+        <span>Answer 问答</span>
+        <span id="answer-guard-pill" class="pill pill-green text-[9px] py-0 px-1">Guarded</span>
+      </button>
+      <span class="text-slate-500 text-xs">──></span>
+      <button id="nav-update" onclick="switchStage('update')" class="stage-nav-btn flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-slate-400 hover:text-white transition-all">
+        <span class="w-4 h-4 rounded-full bg-slate-700 flex items-center justify-center text-[10px]">3</span>
+        <span>Update 演进</span>
+      </button>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="flex items-center gap-3">
+      <button onclick="toggleDrawer()" class="flex items-center gap-1.5 bg-[var(--card)] hover:bg-[var(--card-hover)] border border-[var(--border)] text-slate-300 hover:text-white px-2.5 py-1 rounded-md text-xs font-medium transition">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+        <span id="drawerToggleText">收起抽屉</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= MAIN 3-COLUMN WORKBENCH ================= -->
+  <div class="flex flex-1 overflow-hidden">
+
+    <!-- 1. LEFT SIDEBAR (第 2 级：数据库选择与原始输入源，固定 280px) -->
+    <aside class="w-[280px] min-w-[280px] max-w-[280px] bg-[var(--card)] border-r border-[var(--border)] flex flex-col overflow-hidden select-none">
+      
+      <!-- 第二级：左栏【数据库选择】 -->
+      <div class="p-3 border-b border-[var(--border)] flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            2. 数据库选择 (Database)
+          </label>
+          <span id="db-count-badge" class="text-[10px] text-slate-500 font-mono">3 个物理库</span>
+        </div>
+
+        <!-- Database List Cards Container -->
+        <div id="db-list-container" class="flex flex-col gap-1.5 max-h-[160px] overflow-y-auto pr-1">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </div>
+
+      <!-- Tab Switcher: 物理表 vs 历史 SQL -->
+      <div class="flex border-b border-[var(--border)] bg-[var(--surface)] text-xs">
+        <button id="left-tab-tables" onclick="switchLeftTab('tables')" class="flex-1 py-2 font-semibold text-indigo-400 border-b-2 border-indigo-500 transition flex items-center justify-center gap-1">
+          <span>📋 原始物理表</span>
+          <span id="tab-table-count" class="text-[10px] bg-slate-800 px-1 rounded text-slate-300">(13)</span>
+        </button>
+        <button id="left-tab-history" onclick="switchLeftTab('history')" class="flex-1 py-2 font-semibold text-slate-400 hover:text-slate-200 transition flex items-center justify-center gap-1">
+          <span>📜 历史 SQL 负载</span>
+          <span id="tab-sql-count" class="text-[10px] bg-slate-800 px-1 rounded text-slate-300">(42)</span>
+        </button>
+      </div>
+
+      <!-- Left Tab 1: Physical Tables Tree (with masked columns) -->
+      <div id="left-content-tables" class="flex-1 overflow-y-auto p-2.5 flex flex-col gap-1.5">
+        <!-- Dynamically rendered based on active database -->
+      </div>
+
+      <!-- Left Tab 2: History SQL Workload (Clickable to highlight graph elements) -->
+      <div id="left-content-history" class="flex-1 overflow-y-auto p-2.5 hidden flex-col gap-2">
+        <!-- Dynamically rendered based on active database -->
+      </div>
+    </aside>
+
+    <!-- 2. CENTRAL DYNAMIC STAGE (第 3 级：中央主舞台 · 该库专属独立本体图) -->
+    <main class="flex-1 flex flex-col bg-[var(--bg)] overflow-hidden relative">
+
+      <!-- ================= STAGE VIEW 1: CONSTRUCT ================= -->
+      <section id="stage-construct" class="flex-1 flex flex-col overflow-hidden">
+        <!-- Sub-toolbar -->
+        <div class="h-10 bg-[var(--surface)] border-b border-[var(--border)] px-4 flex items-center justify-between flex-shrink-0">
+          <div class="flex items-center gap-2">
+            <button onclick="runConstructAnimation()" class="btn bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs px-3 py-1 rounded flex items-center gap-1.5 transition shadow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span>▶ Run Construct (运行本体构建)</span>
+            </button>
+            <button onclick="resetConstructCanvas()" class="text-xs text-slate-400 hover:text-white px-2 py-1 rounded hover:bg-slate-800 transition">重置</button>
+            <span id="construct-status-tag" class="text-xs text-slate-400 border-l border-slate-700 pl-2">已就绪 · 点击运行启动从历史 SQL 痕迹的恢复</span>
+          </div>
+          <div class="flex items-center gap-2 text-xs">
+            <span class="pill pill-indigo">胶囊聚合本体图</span>
+            <span class="text-slate-500">· 告别满屏碎节点</span>
+          </div>
+        </div>
+
+        <!-- Canvas Container for Construct -->
+        <div class="flex-1 relative bg-[#0b0f19] overflow-hidden flex items-center justify-center p-6" style="background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px); background-size: 24px 24px;">
+          <div id="construct-graph-container" class="relative w-full h-full max-w-4xl max-h-[520px] border border-slate-800/60 rounded-xl bg-slate-950/40 p-4 flex items-center justify-center">
+            <!-- Dynamically injected graph for current DB -->
+          </div>
+
+          <!-- Bottom Banner: Proceed to Answer -->
+          <div id="construct-done-banner" class="absolute bottom-4 left-6 right-6 bg-gradient-to-r from-emerald-950/90 via-slate-900/90 to-indigo-950/90 border border-emerald-500/40 rounded-xl p-3 px-5 flex items-center justify-between shadow-2xl backdrop-blur-md hidden">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">🎉</span>
+              <div>
+                <div id="construct-done-title" class="text-sm font-bold text-white">本体图构建已完成</div>
+                <div class="text-xs text-slate-400">已从历史 SQL 挖掘出高置信度列簇与形式化约束，现在可以进入下一阶段。</div>
+              </div>
+            </div>
+            <button onclick="switchStage('answer')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg hover:shadow-emerald-500/30 transition">
+              <span>前往 ② Answer 模块验证 Text-to-SQL</span>
+              <span>→</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= STAGE VIEW 2: ANSWER (问答态：含契约生成与未构建拦截) ================= -->
+      <section id="stage-answer" class="flex-1 flex flex-col overflow-hidden hidden">
+        
+        <!-- Not-Constructed Intercept View -->
+        <div id="answer-unconstructed-view" class="flex-1 flex flex-col items-center justify-center p-8 text-center hidden">
+          <div class="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-3xl mb-4">⚠️</div>
+          <h3 class="text-base font-bold text-white mb-2">当前数据库尚未构建本体图</h3>
+          <p class="text-xs text-slate-400 max-w-md mb-6 leading-relaxed">
+            数据库 <span id="unconstructed-db-name" class="text-amber-300 font-mono font-bold">thrombosis_prediction</span> 尚未从历史 SQL 痕迹中完成实体识别与列簇绑定。<br>
+            请先在 Construct 阶段执行本体恢复算法。
+          </p>
+          <button onclick="switchStage('construct')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-5 py-2.5 rounded-lg flex items-center gap-2 shadow-lg hover:shadow-indigo-500/30 transition">
+            <span>▶ 立即前往 ① Construct 构建本体图</span>
+            <span>→</span>
+          </button>
+        </div>
+
+        <!-- Constructed Full Answer Pipeline View -->
+        <div id="answer-constructed-view" class="flex-1 flex flex-col overflow-hidden">
+          <!-- Question Bar -->
+          <div class="bg-[var(--surface)] border-b border-[var(--border)] p-3 px-4 flex flex-col gap-2 flex-shrink-0">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2 flex-1">
+                <span class="text-xs font-bold text-indigo-400">提问 (Question):</span>
+                <div id="answer-question-text" class="flex-1 bg-slate-900 border border-slate-700 rounded px-2.5 py-1 text-xs text-white font-medium">
+                  哪位车手在 2021 年摩纳哥大奖赛中获得了最快圈速（且完赛排名第一）？
+                </div>
+              </div>
+              <div class="flex items-center gap-2 ml-4">
+                <button onclick="loadPresetQuestion(1)" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 transition">预设题1 (标准)</button>
+                <button onclick="loadPresetQuestion(2)" class="text-xs bg-amber-950/60 hover:bg-amber-900/60 text-amber-300 px-2 py-1 rounded border border-amber-600/40 transition">陷阱题2 (缺口告警)</button>
+                <button onclick="runAnswerPipeline()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-3 py-1 rounded flex items-center gap-1 shadow transition">
+                  <span>▶ 运行</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 4-Stage Stepper -->
+            <div class="flex items-center gap-2 text-xs text-slate-400 border-t border-slate-800/80 pt-2 font-mono">
+              <span class="text-slate-500 font-sans font-semibold">阶段流水线:</span>
+              <span id="step-subgraph" class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 font-bold">① 实体识别/子图检索</span>
+              <span>➔</span>
+              <span id="step-linking" class="px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">② 列族表卡绑定</span>
+              <span>➔</span>
+              <span id="step-contract" class="px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">③ 语义契约生成</span>
+              <span>➔</span>
+              <span id="step-sql" class="px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">④ 受控 SQL 组装</span>
+            </div>
+          </div>
+
+          <!-- Upper Stage: 3-Panel Semantic Convergence -->
+          <div class="flex-1 grid grid-cols-3 gap-3 p-3 overflow-hidden bg-[#0a0e17]">
+            
+            <!-- Panel 1: Subgraph Spotlight -->
+            <div id="answer-subgraph-box" class="bg-[var(--card)] border border-[var(--border)] rounded-lg p-3 flex flex-col overflow-hidden transition-all duration-300">
+              <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
+                <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                  1. 抽取的本体子图 (Subgraph)
+                </span>
+                <span class="pill pill-indigo text-[10px]">3 节点 · 剪枝 21 无关表</span>
+              </div>
+              <div id="answer-subgraph-render" class="flex-1 flex flex-col items-center justify-around p-2 text-xs font-mono relative">
+                <!-- Injected by JS -->
+              </div>
+            </div>
+
+            <!-- Panel 2: Bound Physical Tables & Column Family Cards -->
+            <div id="answer-families-box" class="bg-[var(--card)] border border-[var(--border)] rounded-lg p-3 flex flex-col overflow-hidden transition-all duration-300">
+              <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
+                <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  2. 绑定的物理表与列族 (Coupled Families)
+                </span>
+                <span class="pill pill-green text-[10px]">已对齐掩码物理列</span>
+              </div>
+              <div id="answer-families-render" class="flex-1 overflow-y-auto flex flex-col gap-2 p-1">
+                <!-- Injected by JS -->
+              </div>
+            </div>
+
+            <!-- Panel 3: Semantic Query Contract -->
+            <div id="answer-contract-box" class="bg-[var(--card)] border border-[var(--border)] rounded-lg p-3 flex flex-col overflow-hidden transition-all duration-300">
+              <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
+                <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                  3. 签发的语义契约 (Query Contract)
+                </span>
+                <span id="contract-status-badge" class="pill pill-green text-[10px]">已锁定 4 条款</span>
+              </div>
+              <div id="contract-clauses-body" class="flex-1 overflow-y-auto flex flex-col gap-2 text-xs font-mono">
+                <!-- Injected by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Lower Stage: Contract-Guarded SQL Assembly & Sandbox Result -->
+          <div class="h-44 bg-[var(--surface)] border-t border-[var(--border)] flex flex-shrink-0">
+            <!-- Left: Guarded SQL -->
+            <div class="w-3/5 border-r border-[var(--border)] p-3 flex flex-col">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                  📝 生成的受控 SQL (鼠标悬停子句，上方对应条款与图谱节点联动)
+                </span>
+                <span class="pill pill-green text-[10px]">✓ 契约一致性 100% 校验通过</span>
+              </div>
+              <div id="answer-sql-code" class="flex-1 bg-slate-950 border border-slate-800 rounded p-2.5 font-mono text-[11px] text-slate-300 leading-relaxed overflow-y-auto">
+                <!-- Injected by JS -->
+              </div>
+            </div>
+
+            <!-- Right: Execution Table -->
+            <div class="w-2/5 p-3 flex flex-col">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-xs font-bold text-slate-300">📊 沙箱执行结果 (Execution Result)</span>
+                <span class="text-[10px] text-slate-500">耗时 8.2ms</span>
+              </div>
+              <div id="answer-result-table-container" class="flex-1 bg-slate-950 border border-slate-800 rounded overflow-auto">
+                <!-- Injected by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= STAGE VIEW 3: UPDATE (演进态：红黄绿拓扑 Diff) ================= -->
+      <section id="stage-update" class="flex-1 flex flex-col overflow-hidden hidden">
+        <!-- Sub-toolbar -->
+        <div class="h-10 bg-[var(--surface)] border-b border-[var(--border)] px-4 flex items-center justify-between flex-shrink-0">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-white flex items-center gap-1.5">
+              <span>🔄 增量本体演进与闭包校验 (Topological Evolution)</span>
+            </span>
+            <span class="pill pill-purple text-[10px]">版本: v1.0 ➔ v2.0</span>
+          </div>
+          <div class="flex items-center gap-3 text-xs">
+            <span class="flex items-center gap-1 text-emerald-400 font-mono">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 🟢 + 新增 (Added)
+            </span>
+            <span class="flex items-center gap-1 text-amber-400 font-mono">
+              <span class="w-2 h-2 rounded-full bg-amber-500"></span> 🟠 ~ 修订 (Modified)
+            </span>
+            <span class="flex items-center gap-1 text-red-400 font-mono">
+              <span class="w-2 h-2 rounded-full bg-red-500"></span> 🔴 - 剪除 (Removed)
+            </span>
+          </div>
+        </div>
+
+        <!-- Update Center Stage Split: Visual Diff & Comparison -->
+        <div class="flex-1 grid grid-cols-3 gap-3 p-4 bg-[#0a0e17] overflow-hidden">
+          
+          <!-- Left 2 Cols: Topological Diff Canvas -->
+          <div class="col-span-2 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 flex flex-col relative overflow-hidden">
+            <div class="text-xs font-bold text-slate-300 mb-2 flex items-center justify-between">
+              <span>拓扑图增量变更高亮 (基于新入库 SQL #03 触发的增量闭包计算)</span>
+              <span class="text-[10px] text-slate-500">Forward Closure</span>
+            </div>
+
+            <div class="flex-1 relative flex items-center justify-center p-4">
+              <!-- Diff Diagram -->
+              <div class="w-full max-w-xl flex items-center justify-between gap-6">
+                
+                <!-- Node: Race -->
+                <div class="w-44 bg-slate-900 border border-slate-700 rounded-lg p-3 text-xs font-mono">
+                  <div class="text-indigo-400 font-bold mb-1">[Term] Race</div>
+                  <div class="text-slate-400 text-[10px]">races.XCL_065, 069</div>
+                </div>
+
+                <!-- Center Node: Result with Added/Modified items -->
+                <div class="w-56 bg-slate-900 border-2 border-indigo-500/80 rounded-xl p-3.5 text-xs font-mono glow-indigo">
+                  <div class="text-indigo-300 font-bold mb-2 flex justify-between">
+                    <span>[Term] Result</span>
+                    <span class="pill pill-purple text-[9px] py-0">v2.0</span>
+                  </div>
+                  
+                  <div class="flex flex-col gap-1.5 text-[11px]">
+                    <div class="text-slate-400">XCL_074 (resultId)</div>
+                    <div class="text-slate-400">XCL_088 (fastestLap)</div>
+                    
+                    <!-- Added Field: Green -->
+                    <div class="p-1 rounded bg-emerald-950/40 border border-emerald-500/50 text-emerald-300 flex justify-between">
+                      <span>🟢 + XCL_078 (grid)</span>
+                      <span class="text-[9px]">新增列族</span>
+                    </div>
+
+                    <!-- Modified Confidence: Amber -->
+                    <div class="p-1 rounded bg-amber-950/40 border border-amber-500/50 text-amber-300 flex justify-between">
+                      <span>🟠 ~ XCL_085 (rank)</span>
+                      <span class="text-[9px]">置信 0.98</span>
+                    </div>
+                  </div>
+
+                  <!-- New Constraint: Green -->
+                  <div class="mt-2 pt-1.5 border-t border-slate-800 text-[10px] text-emerald-300 font-sans">
+                    🟢 + 守卫: XCL_078 >= 1 (发车格有效)
+                  </div>
+                </div>
+
+                <!-- Node: Driver -->
+                <div class="w-44 bg-slate-900 border border-slate-700 rounded-lg p-3 text-xs font-mono">
+                  <div class="text-indigo-400 font-bold mb-1">[Term] Driver</div>
+                  <div class="text-slate-400 text-[10px]">drivers.XCL_034, 038</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Action -->
+            <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
+              <span class="text-xs text-slate-400">本体拓扑演进闭包已重新编译并入库。</span>
+              <button onclick="switchStage('answer')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-1.5 rounded-lg flex items-center gap-1.5 shadow transition">
+                <span>↺ 返回 Answer 模块重新验证契约</span>
+                <span>➔</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right 1 Col: Evolution Metrics & Diff Table -->
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 flex flex-col overflow-y-auto">
+            <div class="text-xs font-bold text-slate-300 mb-3 flex items-center justify-between">
+              <span>前后口径对比 (Evolution Log)</span>
+              <span class="pill pill-green text-[9px]">增量收敛</span>
+            </div>
+
+            <div class="flex flex-col gap-3 text-xs">
+              <!-- Item 1: Added Column Family -->
+              <div class="p-2.5 rounded bg-slate-900/80 border-l-4 border-emerald-500 flex flex-col gap-1">
+                <div class="flex justify-between items-center">
+                  <span class="font-bold text-emerald-400">🟢 新增列族映射</span>
+                  <span class="pill pill-green text-[9px] py-0">+Added</span>
+                </div>
+                <div class="font-mono text-[11px] text-slate-300">results.XCL_078 ➔ Starting Grid</div>
+                <div class="text-slate-400 text-[11px]">依据 SQL #03 提取过滤断言 <code>XCL_078 <= 3</code>，锁定为前排发车格。</div>
+              </div>
+
+              <!-- Item 2: Modified Confidence -->
+              <div class="p-2.5 rounded bg-slate-900/80 border-l-4 border-amber-500 flex flex-col gap-1">
+                <div class="flex justify-between items-center">
+                  <span class="font-bold text-amber-400">🟠 修订语义置信度</span>
+                  <span class="pill pill-amber text-[9px] py-0">~Modified</span>
+                </div>
+                <div class="font-mono text-[11px] text-slate-300">results.XCL_085 (置信度 0.62 ➔ 0.98)</div>
+                <div class="text-slate-400 text-[11px]">与完赛名次 XCL_079 的互斥测试通过，晋升为官方终评名次。</div>
+              </div>
+
+              <!-- Item 3: Removed Candidate -->
+              <div class="p-2.5 rounded bg-slate-900/80 border-l-4 border-red-500 flex flex-col gap-1">
+                <div class="flex justify-between items-center">
+                  <span class="font-bold text-red-400">🔴 剪除伪候选边</span>
+                  <span class="pill pill-red text-[9px] py-0">-Removed</span>
+                </div>
+                <div class="font-mono text-[11px] text-slate-300">FK: pitStops ➔ status</div>
+                <div class="text-slate-400 text-[11px]">因多重日志出现外键悬挂断言，已从受控连接图中剪除。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. RIGHT DRAWER (右侧：可折叠轨迹抽屉，展开 360px / 收起) -->
+    <aside id="right-drawer" class="w-[360px] min-w-[360px] max-w-[360px] bg-[var(--card)] border-l border-[var(--border)] flex flex-col overflow-hidden transition-all duration-300 select-none">
+      
+      <!-- Upper Half: Agent Execution Trajectory -->
+      <div class="h-1/2 border-b border-[var(--border)] flex flex-col p-3 overflow-y-auto">
+        <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex justify-between items-center">
+          <span>⚡ Agent 执行轨迹 (Step Timeline)</span>
+          <span class="text-[10px] text-slate-500">点击定格回放</span>
+        </div>
+        
+        <div id="drawer-trajectory-steps" class="flex flex-col gap-2 font-mono text-xs">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </div>
+
+      <!-- Lower Half: Evidence Grounding Inspector -->
+      <div class="h-1/2 flex flex-col p-3 overflow-y-auto">
+        <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex justify-between items-center">
+          <span>🔍 选中节点/列族详情 (Inspector)</span>
+          <span id="inspect-target-type" class="text-[10px] text-indigo-400">Target: results.XCL_088</span>
+        </div>
+
+        <div id="inspector-content" class="flex-1 flex flex-col gap-2 text-xs">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- ================= LOGIC SCRIPT ================= -->
+  <script>
+    // DATA MODEL
+    const DATASETS = {
+      'bird': {
+        id: 'bird',
+        name: 'BIRD-History (1393)',
+        databases: {
+          'formula_1': {
+            id: 'formula_1',
+            name: 'formula_1',
+            tablesCount: 13,
+            objectsCount: 959,
+            sqlCount: 42,
+            constructed: true,
+            summary: '13 表 · 959 语义对象 · 34 条受控外键已核验',
+            constructGraph: {
+              capsules: [
+                { id: 'races', title: '[Term] Race (大奖赛)', table: 'races', fields: ['🔑 XCL_065 (raceId)', '🟢 XCL_069 (raceName)'] },
+                { id: 'results', title: '[Term] Result (正赛赛果)', table: 'results', center: true, fields: ['🔑 XCL_074 (resultId)', '🟢 XCL_088 (fastestLap)', '🟡 XCL_079 (positionOrder)'], guard: 'XCL_079 IS NOT NULL' },
+                { id: 'drivers', title: '[Term] Driver (车手)', table: 'drivers', fields: ['🔑 XCL_034 (driverId)', '🟢 XCL_038 (forename)', '🟢 XCL_039 (surname)'] }
+              ]
+            },
+            tables: [
+              { name: 'results', count: 18, cols: [
+                { id: 'results.XCL_074', name: '🔑 XCL_074 (resultId)', type: 'INT', role: '赛果主键 (PK)' },
+                { id: 'results.XCL_075', name: '🔗 XCL_075 (driverId)', type: 'INT', role: '车手外键 (FK -> drivers)' },
+                { id: 'results.XCL_079', name: '🟢 XCL_079 (positionOrder)', type: 'INT', role: '完赛名次 (DNF为NULL)' },
+                { id: 'results.XCL_088', name: '🟢 XCL_088 (fastestLapTime)', type: 'VARCHAR', role: '正赛最快圈速' }
+              ]},
+              { name: 'drivers', count: 9, cols: [
+                { id: 'drivers.XCL_034', name: '🔑 XCL_034 (driverId)', type: 'INT', role: '车手主键 (PK)' },
+                { id: 'drivers.XCL_038', name: '🟢 XCL_038 (forename)', type: 'VARCHAR', role: '车手名' },
+                { id: 'drivers.XCL_039', name: '🟢 XCL_039 (surname)', type: 'VARCHAR', role: '车手姓' }
+              ]},
+              { name: 'races', count: 18, cols: [
+                { id: 'races.XCL_065', name: '🔑 XCL_065 (raceId)', type: 'INT', role: '赛事主键 (PK)' },
+                { id: 'races.XCL_069', name: '🟢 XCL_069 (raceName)', type: 'VARCHAR', role: '大奖赛名称' }
+              ]}
+            ],
+            sqls: [
+              { id: 'SQL #01', type: '3表关联', query: 'SELECT d.XCL_038, r.XCL_088 FROM results r JOIN drivers d ON r.XCL_075 = d.XCL_034 WHERE r.XCL_079 = 1', highlightTarget: 'results.XCL_075' },
+              { id: 'SQL #02', type: '聚合过滤', query: 'SELECT AVG(XCL_088) FROM results WHERE XCL_088 IS NOT NULL GROUP BY XCL_075', highlightTarget: 'results.XCL_088' },
+              { id: 'SQL #03', type: '增量入库', query: 'SELECT XCL_078, XCL_085 FROM results WHERE XCL_078 <= 3', highlightTarget: 'results.XCL_078' }
+            ],
+            answer: {
+              question: '哪位车手在 2021 年摩纳哥大奖赛中获得了最快圈速（且完赛排名第一）？',
+              subgraph: `
+                <div class="w-full flex items-center justify-between gap-2">
+                  <div class="p-2 rounded bg-indigo-950/60 border border-indigo-500/40 text-center flex-1">
+                    <div class="text-indigo-300 font-bold">[Term] Driver</div>
+                    <div class="text-[10px] text-slate-400">drivers</div>
+                  </div>
+                  <div class="text-indigo-400 text-base">➔</div>
+                  <div class="p-2 rounded bg-indigo-900/80 border-2 border-indigo-400 text-center flex-1 glow-indigo">
+                    <div class="text-white font-bold">[Term] Result</div>
+                    <div class="text-[10px] text-amber-300">🔑 核心赛果</div>
+                  </div>
+                  <div class="text-indigo-400 text-base">⬅</div>
+                  <div class="p-2 rounded bg-indigo-950/60 border border-indigo-500/40 text-center flex-1">
+                    <div class="text-indigo-300 font-bold">[Term] Race</div>
+                    <div class="text-[10px] text-slate-400">races</div>
+                  </div>
+                </div>
+              `,
+              families: `
+                <div class="p-2 rounded bg-slate-900/90 border border-slate-700 flex flex-col gap-1">
+                  <div class="flex justify-between font-bold text-indigo-300"><span>表: drivers</span><span class="text-[10px] text-slate-400">9列 ➔ 留存3列</span></div>
+                  <div class="text-slate-300 text-[11px]">• 🟢 [身份标识]: XCL_034(PK), XCL_038(名), XCL_039(姓)</div>
+                </div>
+                <div class="p-2 rounded bg-slate-900/90 border border-indigo-500/50 flex flex-col gap-1">
+                  <div class="flex justify-between font-bold text-indigo-300"><span>表: results</span><span class="text-[10px] text-indigo-400">18列 ➔ 留存4列</span></div>
+                  <div class="text-slate-300 text-[11px]">• 🟢 [最快圈速]: XCL_088 (fastestLapTime)</div>
+                  <div class="text-slate-300 text-[11px]">• 🟡 [完赛名次]: XCL_079 = 1 (DNF为NULL)</div>
+                </div>
+                <div class="p-2 rounded bg-slate-900/90 border border-slate-700 flex flex-col gap-1">
+                  <div class="flex justify-between font-bold text-indigo-300"><span>表: races</span><span class="text-[10px] text-slate-400">18列 ➔ 留存2列</span></div>
+                  <div class="text-slate-300 text-[11px]">• 🟢 [赛事标识]: XCL_065(PK), XCL_069(赛事名)</div>
+                </div>
+              `,
+              contract: {
+                id: 'contract_f1_q01',
+                grain: 'result (车手单场赛果级)',
+                joinPath: 'results.XCL_075 = drivers.XCL_034 ∧ results.XCL_074 = races.XCL_065',
+                projections: 'Name ➔ XCL_038, XCL_039; Fastest ➔ XCL_088',
+                guards: '[BLOCK] XCL_079 = 1 ∧ [WARN] XCL_088 IS NOT NULL'
+              },
+              sql: `SELECT d.XCL_038, d.XCL_039, r.XCL_088\nFROM results r\nJOIN drivers d ON r.XCL_075 = d.XCL_034\nJOIN races ra ON r.XCL_074 = ra.XCL_065\nWHERE ra.XCL_069 = 'Monaco Grand Prix'\n  AND r.XCL_079 = 1 AND r.XCL_088 IS NOT NULL`,
+              tableHeaders: ['XCL_038 (名)', 'XCL_039 (姓)', 'XCL_088 (最快圈速)'],
+              tableRows: [['Lewis', 'Hamilton', '1:12.909']]
+            }
+          },
+          'thrombosis_prediction': {
+            id: 'thrombosis_prediction',
+            name: 'thrombosis_prediction',
+            tablesCount: 3,
+            objectsCount: 782,
+            sqlCount: 163,
+            constructed: false, // Starts unconstructed to demonstrate user flow
+            summary: '3 表 · 782 语义对象 · 12 条医学级联外键',
+            constructGraph: {
+              capsules: [
+                { id: 'diag', title: '🔵 thrombosis_diagnosis', table: 'thrombosis_diagnosis', fields: ['🔑 COL_00 (diag_id)', '🟢 COL_01 (恢复为 label)'] },
+                { id: 'pat', title: '🔵 patient_record', table: 'patient_record', center: true, fields: ['🔑 COL_10 (patient_id)', '🟢 COL_11 (恢复为 age)', '🟢 COL_12 (恢复为 gender)'], guard: 'COL_01 IN (\'positive\', \'negative\')' }
+              ]
+            },
+            tables: [
+              { name: 'thrombosis_diagnosis', count: 8, cols: [
+                { id: 'thrombosis.diag_id', name: '🔑 COL_00 (diagnosis_id)', type: 'INT', role: '主键 (PK)' },
+                { id: 'thrombosis.COL_01', name: '🟢 COL_01 (恢复为 label)', type: 'VARCHAR', role: '血栓确诊标签 (阳性/阴性)' },
+                { id: 'thrombosis.patient_fk', name: '🔗 COL_02 (patient_id)', type: 'INT', role: '外键 (FK -> patient_record)' }
+              ]},
+              { name: 'patient_record', count: 14, cols: [
+                { id: 'patient.COL_10', name: '🔑 COL_10 (patient_id)', type: 'INT', role: '患者主键 (PK)' },
+                { id: 'patient.COL_11', name: '🟢 COL_11 (恢复为 age)', type: 'INT', role: '患者年龄' },
+                { id: 'patient.COL_12', name: '🟢 COL_12 (恢复为 gender)', type: 'VARCHAR', role: '患者性别' }
+              ]},
+              { name: 'examination', count: 20, cols: [
+                { id: 'exam.COL_20', name: '🔑 COL_20 (exam_id)', type: 'INT', role: '主键 (PK)' },
+                { id: 'exam.COL_21', name: '🟢 COL_21 (恢复为 d_dimer)', type: 'FLOAT', role: 'D-二聚体检验值' }
+              ]}
+            ],
+            sqls: [
+              { id: 'SQL #T01', type: '级联诊断', query: 'SELECT p.COL_11, t.COL_01 FROM thrombosis_diagnosis t JOIN patient_record p ON t.COL_02 = p.COL_10 WHERE t.COL_01 = \'positive\'' },
+              { id: 'SQL #T02', type: '指标检验', query: 'SELECT e.COL_21, t.COL_01 FROM examination e JOIN thrombosis_diagnosis t ON e.COL_02 = t.COL_00 WHERE e.COL_21 > 0.5' }
+            ],
+            answer: {
+              question: '哪些 60 岁以上的患者被确诊为血栓阳性，且 D-二聚体高于 0.5？',
+              subgraph: `
+                <div class="w-full flex flex-col items-center gap-3">
+                  <div class="p-2 rounded bg-indigo-950/60 border border-indigo-500/40 text-center w-48">
+                    <div class="text-indigo-300 font-bold">🔵 thrombosis_diagnosis</div>
+                    <div class="text-[10px] text-slate-400">确诊记录</div>
+                  </div>
+                  <div class="text-indigo-400 text-xs">▼ (1:N 级联)</div>
+                  <div class="p-2 rounded bg-indigo-900/80 border-2 border-indigo-400 text-center w-56 glow-indigo">
+                    <div class="text-white font-bold">🔵 patient_record</div>
+                    <div class="text-[10px] text-emerald-300">🟢 COL_01 (恢复为 label)</div>
+                  </div>
+                </div>
+              `,
+              families: `
+                <div class="p-2 rounded bg-slate-900/90 border border-slate-700 flex flex-col gap-1">
+                  <div class="flex justify-between font-bold text-indigo-300"><span>表: patient_record</span><span class="text-[10px] text-slate-400">14列 ➔ 留存3列</span></div>
+                  <div class="text-slate-300 text-[11px]">• 🟢 [患者特征]: COL_10(PK), COL_11(年龄), COL_12(性别)</div>
+                </div>
+                <div class="p-2 rounded bg-slate-900/90 border border-indigo-500/50 flex flex-col gap-1">
+                  <div class="flex justify-between font-bold text-indigo-300"><span>表: thrombosis_diagnosis</span><span class="text-[10px] text-indigo-400">8列 ➔ 留存3列</span></div>
+                  <div class="text-slate-300 text-[11px]">• 🟢 [诊断标签]: COL_01 (确诊结果: 阳性)</div>
+                </div>
+              `,
+              contract: {
+                id: 'contract_thrombosis_q01',
+                grain: 'patient_diagnosis (患者确诊记录级)',
+                joinPath: 't.COL_02 = p.COL_10 ∧ t.COL_00 = e.COL_02',
+                projections: 'Patient ➔ COL_10, COL_11; D-Dimer ➔ COL_21',
+                guards: '[BLOCK] COL_01 = \'positive\' ∧ [WARN] COL_21 > 0.5'
+              },
+              sql: `SELECT p.COL_10, p.COL_11, e.COL_21\nFROM thrombosis_diagnosis t\nJOIN patient_record p ON t.COL_02 = p.COL_10\nJOIN examination e ON t.COL_00 = e.COL_02\nWHERE p.COL_11 > 60 AND t.COL_01 = 'positive' AND e.COL_21 > 0.5`,
+              tableHeaders: ['COL_10 (ID)', 'COL_11 (年龄)', 'COL_21 (D-二聚体)'],
+              tableRows: [['P-10492', '67 岁', '0.84 ug/mL'], ['P-10831', '72 岁', '1.15 ug/mL']]
+            }
+          },
+          'california_schools': {
+            id: 'california_schools',
+            name: 'california_schools',
+            tablesCount: 3,
+            objectsCount: 512,
+            sqlCount: 89,
+            constructed: true,
+            summary: '3 表 · 512 语义对象 · 8 条学区主外键',
+            constructGraph: {
+              capsules: [
+                { id: 'sch', title: '[Term] School (学校)', table: 'schools', fields: ['🔑 CDSCode', '🟢 School (校名)', '🟢 City (城市)'] },
+                { id: 'sat', title: '[Term] SAT Score (成绩)', table: 'satscores', center: true, fields: ['🔗 CDS', '🟢 AvgScrMath (数学)', '🟢 AvgScrRead (阅读)'], guard: 'AvgScrMath IS NOT NULL' }
+              ]
+            },
+            tables: [
+              { name: 'schools', count: 12, cols: [
+                { id: 'schools.CDSCode', name: '🔑 CDSCode (学校编码)', type: 'VARCHAR', role: '主键 (PK)' },
+                { id: 'schools.School', name: '🟢 School (学校名称)', type: 'VARCHAR', role: '校名' },
+                { id: 'schools.City', name: '🟢 City (所属城市)', type: 'VARCHAR', role: '城市' }
+              ]},
+              { name: 'satscores', count: 9, cols: [
+                { id: 'sat.CDS', name: '🔑 CDS (学校外键)', type: 'VARCHAR', role: '外键 (FK -> schools)' },
+                { id: 'sat.AvgScrMath', name: '🟢 AvgScrMath (数学均分)', type: 'FLOAT', role: 'SAT数学' }
+              ]}
+            ],
+            sqls: [
+              { id: 'SQL #S01', type: '学区成绩', query: 'SELECT s.School, sa.AvgScrMath FROM schools s JOIN satscores sa ON s.CDSCode = sa.CDS WHERE s.City = \'San Francisco\'' }
+            ],
+            answer: {
+              question: '旧金山市数学 SAT 平均分最高的公立学校是哪所？',
+              subgraph: `
+                <div class="w-full flex items-center justify-center gap-4">
+                  <div class="p-2.5 rounded bg-indigo-950/60 border border-indigo-500/40 text-center w-40">
+                    <div class="text-indigo-300 font-bold">[Term] School</div>
+                    <div class="text-[10px] text-slate-400">schools</div>
+                  </div>
+                  <div class="text-indigo-400 text-sm">➔</div>
+                  <div class="p-2.5 rounded bg-indigo-900/80 border-2 border-indigo-400 text-center w-44 glow-indigo">
+                    <div class="text-white font-bold">[Term] SAT Score</div>
+                    <div class="text-[10px] text-amber-300">satscores</div>
+                  </div>
+                </div>
+              `,
+              families: `
+                <div class="p-2 rounded bg-slate-900/90 border border-slate-700 flex flex-col gap-1">
+                  <div class="flex justify-between font-bold text-indigo-300"><span>表: schools</span><span class="text-[10px] text-slate-400">12列 ➔ 留存3列</span></div>
+                  <div class="text-slate-300 text-[11px]">• 🟢 [学校信息]: CDSCode(PK), School(校名), City(城市)</div>
+                </div>
+                <div class="p-2 rounded bg-slate-900/90 border border-indigo-500/50 flex flex-col gap-1">
+                  <div class="flex justify-between font-bold text-indigo-300"><span>表: satscores</span><span class="text-[10px] text-indigo-400">9列 ➔ 留存2列</span></div>
+                  <div class="text-slate-300 text-[11px]">• 🟢 [成绩列族]: AvgScrMath (数学均分)</div>
+                </div>
+              `,
+              contract: {
+                id: 'contract_schools_q01',
+                grain: 'school (公立学校单校级)',
+                joinPath: 'schools.CDSCode = satscores.CDS',
+                projections: 'School ➔ s.School; Math ➔ sa.AvgScrMath',
+                guards: '[BLOCK] City = \'San Francisco\' ∧ [WARN] AvgScrMath IS NOT NULL'
+              },
+              sql: `SELECT s.School, sa.AvgScrMath\nFROM schools s\nJOIN satscores sa ON s.CDSCode = sa.CDS\nWHERE s.City = 'San Francisco' AND sa.AvgScrMath IS NOT NULL\nORDER BY sa.AvgScrMath DESC LIMIT 1`,
+              tableHeaders: ['School (学校名称)', 'AvgScrMath (数学均分)'],
+              tableRows: [['Lowell High School', '695.4']]
+            }
+          }
+        }
+      },
+      'spider': {
+        id: 'spider',
+        name: 'Spider 2.0-Lite (135)',
+        databases: {
+          'financial_crm': {
+            id: 'financial_crm',
+            name: 'financial_crm',
+            tablesCount: 6,
+            objectsCount: 430,
+            sqlCount: 55,
+            constructed: false,
+            summary: '6 表 · 430 语义对象 · 18 业务约束',
+            constructGraph: { capsules: [] },
+            tables: [{ name: 'accounts', count: 8, cols: [] }, { name: 'transactions', count: 12, cols: [] }],
+            sqls: []
+          }
+        }
+      },
+      'beaver': {
+        id: 'beaver',
+        name: 'Beaver (350)',
+        databases: {
+          'retail_analytics': {
+            id: 'retail_analytics',
+            name: 'retail_analytics',
+            tablesCount: 4,
+            objectsCount: 290,
+            sqlCount: 70,
+            constructed: false,
+            summary: '4 表 · 290 语义对象 · 11 业务约束',
+            constructGraph: { capsules: [] },
+            tables: [{ name: 'stores', count: 6, cols: [] }],
+            sqls: []
+          }
+        }
+      }
+    };
+
+    // CURRENT STATE
+    let currentDatasetKey = 'bird';
+    let currentDbKey = 'formula_1';
+    let currentStage = 'construct';
+    let isDrawerOpen = true;
+
+    // INIT
+    window.addEventListener('DOMContentLoaded', () => {
+      renderDatasetTabs();
+      renderDbList();
+      loadActiveDbView();
+      switchStage('construct');
+    });
+
+    // 1. DATASET SWITCHING
+    function selectDataset(dsKey) {
+      currentDatasetKey = dsKey;
+      ['bird', 'spider', 'beaver'].forEach(k => {
+        const btn = document.getElementById('ds-' + k);
+        if (k === dsKey) {
+          btn.className = 'ds-tab-btn flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-indigo-600 text-white shadow-sm transition';
+        } else {
+          btn.className = 'ds-tab-btn flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition';
+        }
+      });
+
+      // Select first DB of this dataset
+      const dbKeys = Object.keys(DATASETS[dsKey].databases);
+      currentDbKey = dbKeys[0];
+      renderDbList();
+      loadActiveDbView();
+    }
+
+    function renderDatasetTabs() {
+      // Done in HTML markup, class toggled in selectDataset
+    }
+
+    // 2. DATABASE LIST (第二级：左栏【数据库选择】)
+    function renderDbList() {
+      const container = document.getElementById('db-list-container');
+      const ds = DATASETS[currentDatasetKey];
+      const dbs = ds.databases;
+      const keys = Object.keys(dbs);
+      
+      document.getElementById('db-count-badge').textContent = `${keys.length} 个物理库`;
+
+      container.innerHTML = keys.map(k => {
+        const db = dbs[k];
+        const isActive = k === currentDbKey;
+        const statusBadge = db.constructed 
+          ? `<span class="pill pill-green text-[9px] py-0 px-1">已构建</span>`
+          : `<span class="pill pill-amber text-[9px] py-0 px-1">未构建</span>`;
+
+        return `
+          <div onclick="selectDatabase('${k}')" class="p-2 rounded-lg border cursor-pointer transition flex items-center justify-between ${
+            isActive 
+              ? 'bg-indigo-950/40 border-indigo-500/80 shadow-md' 
+              : 'bg-[var(--surface)] border-[var(--border)] hover:border-slate-700'
+          }">
+            <div class="flex items-center gap-2 overflow-hidden">
+              <span class="text-base">📁</span>
+              <div class="overflow-hidden">
+                <div class="font-mono text-xs font-bold ${isActive ? 'text-indigo-300' : 'text-slate-300'} truncate">
+                  ${db.name}
+                </div>
+                <div class="text-[10px] text-slate-400 truncate">
+                  ${db.tablesCount} 表 · ${db.objectsCount} 对象 · ${db.sqlCount} SQL
+                </div>
+              </div>
+            </div>
+            <div>${statusBadge}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectDatabase(dbKey) {
+      currentDbKey = dbKey;
+      renderDbList();
+      loadActiveDbView();
+    }
+
+    // LOAD ACTIVE DB VIEW (Left Tables, SQLs, and Central Graph)
+    function loadActiveDbView() {
+      const db = DATASETS[currentDatasetKey].databases[currentDbKey];
+      if (!db) return;
+
+      // Update Left Counts
+      document.getElementById('tab-table-count').textContent = `(${db.tablesCount})`;
+      document.getElementById('tab-sql-count').textContent = `(${db.sqlCount})`;
+
+      // Render Left Tables Tree
+      const tablesContainer = document.getElementById('left-content-tables');
+      if (db.tables && db.tables.length > 0) {
+        tablesContainer.innerHTML = `
+          <input type="text" placeholder="搜索表或字段..." class="w-full bg-[var(--bg)] border border-[var(--border)] rounded px-2 py-1 text-xs text-slate-200 mb-1 outline-none">
+          ${db.tables.map((t, idx) => `
+            <div class="rounded border ${idx === 0 ? 'border-indigo-500/30' : 'border-[var(--border)]'} bg-[var(--surface)] overflow-hidden">
+              <div onclick="toggleTableTree('tree-${t.name}')" class="flex items-center justify-between p-2 cursor-pointer hover:bg-slate-800 transition">
+                <div class="flex items-center gap-1.5 font-mono text-xs ${idx === 0 ? 'text-indigo-300' : 'text-slate-300'} font-semibold">
+                  <span id="caret-tree-${t.name}" class="text-[9px] text-slate-500 transition-transform">${idx === 0 ? '▼' : '▶'}</span>
+                  <span>${t.name}</span>
+                </div>
+                <span class="text-[10px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">${t.count}列</span>
+              </div>
+              <div id="tree-${t.name}" class="px-2.5 pb-2 pt-0.5 ${idx === 0 ? 'flex' : 'hidden'} flex-col gap-1 text-[11px] font-mono">
+                ${t.cols.map(c => `
+                  <div class="flex justify-between items-center text-slate-300 hover:text-white py-0.5 cursor-pointer" onclick="inspectElement('col', '${c.id}', '${c.role}', '${t.name}')">
+                    <span>${c.name}</span><span class="text-slate-500 text-[10px]">${c.type}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `).join('')}
+        `;
+      } else {
+        tablesContainer.innerHTML = `<div class="text-xs text-slate-500 p-3">无表数据定义</div>`;
+      }
+
+      // Render Left History SQLs
+      const historyContainer = document.getElementById('left-content-history');
+      if (db.sqls && db.sqls.length > 0) {
+        historyContainer.innerHTML = `
+          <div class="text-[11px] text-slate-400 mb-1">点击历史 SQL 可在画布上高亮挖掘出的外键与约束：</div>
+          ${db.sqls.map(s => `
+            <div onclick="highlightFromSql('${s.id}', '${s.highlightTarget}')" class="p-2 rounded border border-[var(--border)] bg-[var(--surface)] hover:border-indigo-400 cursor-pointer transition">
+              <div class="flex justify-between items-center mb-1">
+                <span class="font-mono text-xs font-bold text-indigo-300">${s.id}</span>
+                <span class="pill pill-purple text-[9px] py-0 px-1">${s.type}</span>
+              </div>
+              <div class="mono text-[10px] text-slate-300 line-clamp-2 leading-relaxed">
+                ${s.query}
+              </div>
+            </div>
+          `).join('')}
+        `;
+      } else {
+        historyContainer.innerHTML = `<div class="text-xs text-slate-500 p-3">暂无已收录的历史 SQL 记录</div>`;
+      }
+
+      // Render Central Construct Stage Graph for this DB
+      renderConstructGraphForDb(db);
+
+      // Refresh Answer Stage View according to constructed status
+      renderAnswerStageForDb(db);
+
+      // Render Trajectory Steps in Drawer
+      renderTrajectoryForDb(db);
+    }
+
+    // 3. RENDER CONSTRUCT GRAPH FOR ACTIVE DB
+    function renderConstructGraphForDb(db) {
+      const container = document.getElementById('construct-graph-container');
+      const banner = document.getElementById('construct-done-banner');
+      const statusTag = document.getElementById('construct-status-tag');
+      
+      document.getElementById('construct-done-title').textContent = `本体图构建已完成 (${db.summary})`;
+
+      if (db.id === 'thrombosis_prediction') {
+        container.innerHTML = `
+          <div class="flex flex-col items-center justify-center gap-6 w-full">
+            <div id="capsule-diag" class="w-64 bg-slate-900 border border-slate-700 rounded-xl p-3 shadow-lg transition-all duration-300 hover:border-indigo-500">
+              <div class="flex items-center justify-between pb-1.5 border-b border-slate-800 mb-2">
+                <span class="font-bold text-xs text-indigo-300 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                  🔵 thrombosis_diagnosis
+                </span>
+                <span class="text-[10px] text-slate-500 font-mono">8列</span>
+              </div>
+              <div class="flex flex-col gap-1 text-[11px] font-mono text-slate-300">
+                <div class="flex justify-between bg-slate-800/50 px-1.5 py-0.5 rounded">
+                  <span>🔑 COL_00</span><span class="text-indigo-300 text-[10px]">diagnosis_id</span>
+                </div>
+                <div class="flex justify-between bg-slate-800/50 px-1.5 py-0.5 rounded">
+                  <span>🟢 COL_01</span><span class="text-emerald-300 text-[10px]">恢复为 label</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col items-center text-indigo-400 font-mono text-xs">
+              <span>▼ (1:N 级联外键: patient_id)</span>
+            </div>
+
+            <div id="capsule-pat" class="w-72 bg-slate-900 border-2 border-indigo-500/70 rounded-xl p-3.5 shadow-xl glow-indigo">
+              <div class="flex items-center justify-between pb-1.5 border-b border-slate-800 mb-2">
+                <span class="font-bold text-xs text-indigo-300 flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-pulse"></span>
+                  🔵 patient_record
+                </span>
+                <span class="text-[10px] text-slate-400 font-mono">14列</span>
+              </div>
+              <div class="flex flex-col gap-1 text-[11px] font-mono text-slate-200">
+                <div class="flex justify-between bg-indigo-950/40 border border-indigo-500/30 px-2 py-0.5 rounded">
+                  <span>🔑 COL_10</span><span class="text-indigo-300 text-[10px]">patient_id</span>
+                </div>
+                <div class="flex justify-between bg-emerald-950/30 border border-emerald-500/30 px-2 py-0.5 rounded">
+                  <span>🟢 COL_11</span><span class="text-emerald-300 text-[10px]">恢复为 age</span>
+                </div>
+                <div class="flex justify-between bg-emerald-950/30 border border-emerald-500/30 px-2 py-0.5 rounded">
+                  <span>🟢 COL_12</span><span class="text-emerald-300 text-[10px]">恢复为 gender</span>
+                </div>
+              </div>
+              <div class="mt-2 pt-1.5 border-t border-slate-800 flex items-center gap-1 text-[10px] text-amber-300">
+                <span>🛡️ 形式化约束:</span>
+                <span class="bg-amber-500/10 border border-amber-500/30 px-1.5 py-0.5 rounded">COL_01 IN ('positive', 'negative')</span>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (db.id === 'california_schools') {
+        container.innerHTML = `
+          <div class="flex items-center justify-around w-full max-w-2xl">
+            <div class="w-56 bg-slate-900 border border-slate-700 rounded-xl p-3 shadow-lg">
+              <div class="font-bold text-xs text-indigo-300 pb-1.5 border-b border-slate-800 mb-2 flex justify-between">
+                <span>[Term] School</span><span class="text-[10px] text-slate-500">schools</span>
+              </div>
+              <div class="flex flex-col gap-1 text-[11px] font-mono text-slate-300">
+                <div>🔑 CDSCode (PK)</div>
+                <div>🟢 School (校名)</div>
+                <div>🟢 City (城市)</div>
+              </div>
+            </div>
+            <div class="text-indigo-400 font-mono text-xs">➔ (CDS) ➔</div>
+            <div class="w-60 bg-slate-900 border-2 border-indigo-500/70 rounded-xl p-3.5 shadow-xl glow-indigo">
+              <div class="font-bold text-xs text-indigo-300 pb-1.5 border-b border-slate-800 mb-2 flex justify-between">
+                <span>[Term] SAT Score</span><span class="text-[10px] text-slate-400">satscores</span>
+              </div>
+              <div class="flex flex-col gap-1 text-[11px] font-mono text-slate-200">
+                <div>🔗 CDS (FK)</div>
+                <div>🟢 AvgScrMath (数学均分)</div>
+                <div>🟢 AvgScrRead (阅读均分)</div>
+              </div>
+              <div class="mt-2 pt-1 border-t border-slate-800 text-[10px] text-amber-300">
+                🛡️ AvgScrMath IS NOT NULL
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        // formula_1 default
+        container.innerHTML = `
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" id="graph-svg-lines">
+            <line x1="220" y1="260" x2="480" y2="260" stroke="#475569" stroke-width="2" stroke-dasharray="4" />
+            <line x1="480" y1="260" x2="740" y2="260" stroke="#475569" stroke-width="2" stroke-dasharray="4" />
+          </svg>
+          <div id="capsule-races" class="absolute left-10 top-1/2 -translate-y-1/2 w-52 bg-slate-900/90 border border-slate-700 rounded-xl p-3 shadow-lg transition-all duration-300 hover:border-indigo-500">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
+              <span class="font-bold text-xs text-indigo-400 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                [Term] Race (大奖赛)
+              </span>
+              <span class="text-[10px] text-slate-500 font-mono">races</span>
+            </div>
+            <div class="flex flex-col gap-1 text-[11px] font-mono text-slate-300">
+              <div class="flex justify-between bg-slate-800/50 px-1.5 py-0.5 rounded">
+                <span>🔑 XCL_065</span><span class="text-indigo-300 font-sans text-[10px]">raceId</span>
+              </div>
+              <div class="flex justify-between bg-slate-800/50 px-1.5 py-0.5 rounded">
+                <span>🟢 XCL_069</span><span class="text-green-300 font-sans text-[10px]">raceName</span>
+              </div>
+            </div>
+          </div>
+          <div id="capsule-results" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 bg-slate-900/95 border-2 border-indigo-500/70 rounded-xl p-3.5 shadow-xl transition-all duration-300 glow-indigo">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
+              <span class="font-bold text-xs text-indigo-300 flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-pulse"></span>
+                [Term] Result (正赛赛果)
+              </span>
+              <span class="text-[10px] text-indigo-400 font-mono">results</span>
+            </div>
+            <div class="flex flex-col gap-1.5 text-[11px] font-mono text-slate-200">
+              <div class="flex justify-between bg-indigo-950/40 border border-indigo-500/30 px-2 py-0.5 rounded">
+                <span>🔑 XCL_074</span><span class="text-indigo-300 font-sans text-[10px]">resultId</span>
+              </div>
+              <div class="flex justify-between bg-green-950/30 border border-green-500/30 px-2 py-0.5 rounded">
+                <span>🟢 XCL_088</span><span class="text-green-300 font-sans text-[10px]">fastestLap</span>
+              </div>
+              <div class="flex justify-between bg-amber-950/30 border border-amber-500/30 px-2 py-0.5 rounded">
+                <span>🟡 XCL_079</span><span class="text-amber-300 font-sans text-[10px]">positionOrder</span>
+              </div>
+            </div>
+            <div class="mt-2.5 pt-2 border-t border-slate-800 flex items-center gap-1 text-[10px] text-amber-300 font-sans">
+              <span>🛡️ 契约:</span>
+              <span class="bg-amber-500/10 border border-amber-500/30 px-1.5 py-0.5 rounded">XCL_079 IS NOT NULL</span>
+            </div>
+          </div>
+          <div id="capsule-drivers" class="absolute right-10 top-1/2 -translate-y-1/2 w-52 bg-slate-900/90 border border-slate-700 rounded-xl p-3 shadow-lg transition-all duration-300 hover:border-indigo-500">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
+              <span class="font-bold text-xs text-indigo-400 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                [Term] Driver (车手)
+              </span>
+              <span class="text-[10px] text-slate-500 font-mono">drivers</span>
+            </div>
+            <div class="flex flex-col gap-1 text-[11px] font-mono text-slate-300">
+              <div class="flex justify-between bg-slate-800/50 px-1.5 py-0.5 rounded">
+                <span>🔑 XCL_034</span><span class="text-indigo-300 font-sans text-[10px]">driverId</span>
+              </div>
+              <div class="flex justify-between bg-slate-800/50 px-1.5 py-0.5 rounded">
+                <span>🟢 XCL_038</span><span class="text-green-300 font-sans text-[10px]">forename</span>
+              </div>
+              <div class="flex justify-between bg-slate-800/50 px-1.5 py-0.5 rounded">
+                <span>🟢 XCL_039</span><span class="text-green-300 font-sans text-[10px]">surname</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      if (db.constructed) {
+        banner.classList.remove('hidden');
+        statusTag.textContent = '✅ 构建已完成 · 胶囊本体拓扑已固化';
+      } else {
+        banner.classList.add('hidden');
+        statusTag.textContent = '已就绪 · 点击运行启动从历史 SQL 痕迹的恢复';
+      }
+    }
+
+    // 4. RENDER ANSWER STAGE (Handling Constructed vs Not Constructed)
+    function renderAnswerStageForDb(db) {
+      const unconstructedView = document.getElementById('answer-unconstructed-view');
+      const constructedView = document.getElementById('answer-constructed-view');
+      
+      if (!db.constructed) {
+        unconstructedView.classList.remove('hidden');
+        constructedView.classList.add('hidden');
+        document.getElementById('unconstructed-db-name').textContent = db.name;
+        document.getElementById('answer-guard-pill').className = 'pill pill-amber text-[9px] py-0 px-1';
+        document.getElementById('answer-guard-pill').textContent = '未构建';
+      } else {
+        unconstructedView.classList.add('hidden');
+        constructedView.classList.remove('hidden');
+        document.getElementById('answer-guard-pill').className = 'pill pill-green text-[9px] py-0 px-1';
+        document.getElementById('answer-guard-pill').textContent = 'Guarded';
+
+        if (db.answer) {
+          document.getElementById('answer-question-text').textContent = db.answer.question;
+          document.getElementById('answer-subgraph-render').innerHTML = db.answer.subgraph;
+          document.getElementById('answer-families-render').innerHTML = db.answer.families;
+          
+          const c = db.answer.contract;
+          document.getElementById('contract-clauses-body').innerHTML = `
+            <div class="text-slate-400 font-mono text-[10px]">ID: ${c.id} (已锁定)</div>
+            <div id="c-clause-1" class="p-1 rounded bg-slate-900 border border-slate-800 text-slate-200">
+              <strong class="text-amber-300">1. 目标粒度:</strong> ${c.grain}
+            </div>
+            <div id="c-clause-2" class="p-1 rounded bg-slate-900 border border-slate-800 text-slate-200">
+              <strong class="text-amber-300">2. 强制路径:</strong> ${c.joinPath}
+            </div>
+            <div id="c-clause-3" class="p-1 rounded bg-slate-900 border border-slate-800 text-slate-200">
+              <strong class="text-amber-300">3. 列族投影:</strong> ${c.projections}
+            </div>
+            <div id="c-clause-4" class="p-1 rounded bg-slate-900 border border-slate-800 text-slate-200">
+              <strong class="text-amber-300">4. 守卫约束:</strong> ${c.guards}
+            </div>
+          `;
+
+          document.getElementById('answer-sql-code').innerHTML = `
+            <pre class="m-0">${db.answer.sql}</pre>
+          `;
+
+          document.getElementById('answer-result-table-container').innerHTML = `
+            <table class="w-full text-left text-xs font-mono">
+              <thead class="bg-slate-900 text-slate-400 border-b border-slate-800">
+                <tr>${db.answer.tableHeaders.map(h => `<th class="p-2">${h}</th>`).join('')}</tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800 text-slate-200">
+                ${db.answer.tableRows.map(row => `
+                  <tr>${row.map(cell => `<td class="p-2 text-emerald-300 font-bold">${cell}</td>`).join('')}</tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+        }
+      }
+    }
+
+    // 5. STAGE SWITCHER
+    function switchStage(stage) {
+      currentStage = stage;
+      ['construct', 'answer', 'update'].forEach(s => {
+        const btn = document.getElementById('nav-' + s);
+        const view = document.getElementById('stage-' + s);
+        if (s === stage) {
+          btn.className = 'stage-nav-btn flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-600 text-white shadow-sm transition-all';
+          view.classList.remove('hidden');
+        } else {
+          btn.className = 'stage-nav-btn flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-slate-400 hover:text-white transition-all';
+          view.classList.add('hidden');
+        }
+      });
+      
+      const db = DATASETS[currentDatasetKey].databases[currentDbKey];
+      if (stage === 'answer') {
+        renderAnswerStageForDb(db);
+      }
+      renderTrajectoryForDb(db);
+    }
+
+    // 6. RUN CONSTRUCT ANIMATION
+    function runConstructAnimation() {
+      const banner = document.getElementById('construct-done-banner');
+      const status = document.getElementById('construct-status-tag');
+      const db = DATASETS[currentDatasetKey].databases[currentDbKey];
+      
+      status.textContent = '🚀 正在执行本体构建: 解析历史 SQL ➔ 抽取高频 JOIN ➔ 挖掘受控列簇与契约...';
+      
+      setTimeout(() => {
+        db.constructed = true;
+        renderDbList();
+        banner.classList.remove('hidden');
+        status.textContent = '✅ 构建完成 · 胶囊本体拓扑已固化';
+      }, 700);
+    }
+
+    function resetConstructCanvas() {
+      const db = DATASETS[currentDatasetKey].databases[currentDbKey];
+      db.constructed = false;
+      renderDbList();
+      document.getElementById('construct-done-banner').classList.add('hidden');
+      document.getElementById('construct-status-tag').textContent = '已就绪 · 待从历史 SQL 解析恢复本体';
+    }
+
+    // 7. ANSWER PIPELINE & PRESETS
+    function loadPresetQuestion(id) {
+      if (id === 1) {
+        document.getElementById('contract-status-badge').className = 'pill pill-green text-[10px]';
+        document.getElementById('contract-status-badge').textContent = '已锁定 4 条款';
+        const db = DATASETS[currentDatasetKey].databases[currentDbKey];
+        renderAnswerStageForDb(db);
+      } else {
+        document.getElementById('contract-status-badge').className = 'pill pill-amber text-[10px]';
+        document.getElementById('contract-status-badge').textContent = '⚠️ 契约缺口告警';
+        document.getElementById('contract-clauses-body').innerHTML = `
+          <div class="p-2 rounded bg-amber-950/40 border border-amber-500/50 text-amber-200 leading-relaxed text-xs">
+            <strong>⚠️ 契约生成不完整 (Incomplete Contract):</strong><br>
+            概念 [Starting Grid / 发车位] 缺少高置信度列族映射 (XCL_078 置信度仅 0.42)，且缺少非空断言！SQL 生成存在幻觉风险。
+            <div class="mt-2.5">
+              <button onclick="switchStage('update')" class="bg-amber-600 hover:bg-amber-500 text-white font-bold text-[11px] px-3 py-1 rounded shadow transition">
+                🔧 携带未决契约前往 Update 演进 ➔
+              </button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function runAnswerPipeline() {
+      const steps = ['step-subgraph', 'step-linking', 'step-contract', 'step-sql'];
+      steps.forEach((s, idx) => {
+        setTimeout(() => {
+          document.getElementById(s).className = 'px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold';
+        }, idx * 150);
+      });
+    }
+
+    // 8. DRAWER & INSPECTOR
+    function toggleDrawer() {
+      const drawer = document.getElementById('right-drawer');
+      isDrawerOpen = !isDrawerOpen;
+      if (isDrawerOpen) {
+        drawer.style.width = '360px';
+        drawer.style.minWidth = '360px';
+        document.getElementById('drawerToggleText').textContent = '收起抽屉';
+      } else {
+        drawer.style.width = '0px';
+        drawer.style.minWidth = '0px';
+        document.getElementById('drawerToggleText').textContent = '展开抽屉';
+      }
+    }
+
+    function renderTrajectoryForDb(db) {
+      const container = document.getElementById('drawer-trajectory-steps');
+      if (currentStage === 'construct') {
+        container.innerHTML = `
+          <div class="p-2 bg-[var(--surface)] border border-indigo-500/40 rounded">
+            <div class="flex justify-between items-center text-slate-300 mb-0.5">
+              <span class="font-bold text-indigo-300">Step 1: SQL 负载解析</span>
+              <span class="text-[10px] text-slate-500">18ms</span>
+            </div>
+            <div class="text-[11px] font-sans text-slate-400">已解析 ${db.sqlCount} 条历史执行日志，提取 AST 投影。</div>
+          </div>
+          <div class="p-2 bg-[var(--surface)] border border-slate-800 rounded">
+            <div class="flex justify-between items-center text-slate-300 mb-0.5">
+              <span class="font-bold text-green-300">Step 2: 外键与拓扑恢复</span>
+              <span class="text-[10px] text-slate-500">32ms</span>
+            </div>
+            <div class="text-[11px] font-sans text-slate-400">挖掘出受控主外键关系，消除孤岛。</div>
+          </div>
+        `;
+      } else if (currentStage === 'answer') {
+        container.innerHTML = `
+          <div class="p-2 bg-[var(--surface)] border border-indigo-500/40 rounded">
+            <div class="flex justify-between items-center text-slate-300 mb-0.5">
+              <span class="font-bold text-indigo-300">Step 1: 槽位提取 (Mention)</span>
+              <span class="text-[10px] text-slate-500">12ms</span>
+            </div>
+            <div class="text-[11px] font-sans text-slate-400">提取业务槽位与意图词。</div>
+          </div>
+          <div class="p-2 bg-[var(--surface)] border border-slate-800 rounded">
+            <div class="flex justify-between items-center text-slate-300 mb-0.5">
+              <span class="font-bold text-green-300">Step 2: 子图剪枝与列族绑定</span>
+              <span class="text-[10px] text-slate-500">28ms</span>
+            </div>
+            <div class="text-[11px] font-sans text-slate-400">命中核心实体，剪枝无关冗余表。</div>
+          </div>
+          <div class="p-2 bg-[var(--surface)] border border-slate-800 rounded">
+            <div class="flex justify-between items-center text-slate-300 mb-0.5">
+              <span class="font-bold text-amber-300">Step 3: 签发语义契约 (Contract)</span>
+              <span class="text-[10px] text-slate-500">41ms</span>
+            </div>
+            <div class="text-[11px] font-sans text-slate-400">锁定查询粒度与必带守卫断言。</div>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="p-2 bg-[var(--surface)] border border-purple-500/40 rounded">
+            <div class="flex justify-between items-center text-slate-300 mb-0.5">
+              <span class="font-bold text-purple-300">Step 1: 增量日志差分</span>
+              <span class="text-[10px] text-slate-500">14ms</span>
+            </div>
+            <div class="text-[11px] font-sans text-slate-400">计算增量 SQL 闭包，生成 Diff 拓扑。</div>
+          </div>
+        `;
+      }
+    }
+
+    function inspectElement(type, id, label, table) {
+      document.getElementById('inspect-target-type').textContent = 'Target: ' + id;
+      document.getElementById('inspector-content').innerHTML = `
+        <div class="p-2.5 bg-slate-950 border border-slate-800 rounded flex flex-col gap-1.5 font-mono">
+          <div class="text-slate-400 text-[11px]">物理标识: <span class="text-white">${id}</span></div>
+          <div class="text-slate-400 text-[11px]">恢复语义: <span class="text-emerald-300 font-bold">${label}</span></div>
+          <div class="text-slate-400 text-[11px]">所属实体: <span class="text-slate-200">${table}</span></div>
+        </div>
+        <div class="text-[11px] font-bold text-slate-400 mt-1">支撑该映射的历史 SQL 证据:</div>
+        <div class="p-2 bg-slate-950 border border-purple-500/30 rounded font-mono text-[10px] text-purple-300 leading-relaxed">
+          SELECT ${id} FROM ${table} WHERE ${id} IS NOT NULL LIMIT 5;
+        </div>
+      `;
+    }
+
+    function highlightFromSql(sqlId, targetCol) {
+      document.getElementById('inspect-target-type').textContent = 'Evidence: ' + sqlId;
+      document.getElementById('inspector-content').innerHTML = `
+        <div class="p-2.5 bg-slate-950 border border-purple-500/40 rounded flex flex-col gap-1.5 font-mono text-purple-200">
+          <div class="text-white font-bold">${sqlId} 证据解析</div>
+          <div class="text-[11px] text-slate-300">• 挖掘出受控字段: ${targetCol || '关键列族'}</div>
+          <div class="text-[11px] text-slate-300">• 形式化守卫已同步更新到契约池</div>
+        </div>
+      `;
+    }
+
+    function switchLeftTab(tab) {
+      const isTables = tab === 'tables';
+      document.getElementById('left-tab-tables').className = isTables 
+        ? 'flex-1 py-2 font-semibold text-indigo-400 border-b-2 border-indigo-500 transition flex items-center justify-center gap-1'
+        : 'flex-1 py-2 font-semibold text-slate-400 hover:text-slate-200 transition flex items-center justify-center gap-1';
+      document.getElementById('left-tab-history').className = !isTables 
+        ? 'flex-1 py-2 font-semibold text-indigo-400 border-b-2 border-indigo-500 transition flex items-center justify-center gap-1'
+        : 'flex-1 py-2 font-semibold text-slate-400 hover:text-slate-200 transition flex items-center justify-center gap-1';
+
+      document.getElementById('left-content-tables').style.display = isTables ? 'flex' : 'none';
+      document.getElementById('left-content-history').style.display = !isTables ? 'flex' : 'none';
+    }
+
+    function toggleTableTree(id) {
+      const el = document.getElementById(id);
+      const caret = document.getElementById('caret-' + id);
+      if (!el) return;
+      const isHidden = el.classList.contains('hidden');
+      if (isHidden) {
+        el.classList.remove('hidden');
+        el.classList.add('flex');
+        if (caret) caret.style.transform = 'rotate(90deg)';
+      } else {
+        el.classList.add('hidden');
+        el.classList.remove('flex');
+        if (caret) caret.style.transform = 'rotate(0deg)';
+      }
+    }
+  </script>
+</body>
+</html>

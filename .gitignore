@@ -1,0 +1,14 @@
+.local/
+.runtime/
+.venv/
+.qa/
+__pycache__/
+*.pyc
+
+# Archived experiment data stays in place; source branches track code.
+/dist/data/
+/dist/explanations/
+/dist/history-sql/
+/dist_backup_codex/
+/*_RECEIPT.json
+*.zip

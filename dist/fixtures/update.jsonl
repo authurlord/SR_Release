@@ -1,0 +1,1 @@
+{"history_id": "fixture:h1", "sql": "SELECT c1 AS sale_id, c2 AS net_revenue FROM t1"}

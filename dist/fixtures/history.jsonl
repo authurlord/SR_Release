@@ -1,0 +1,3 @@
+{"history_id": "fixture:h1", "sql": "SELECT c1 AS sale_id, c2 AS revenue FROM t1"}
+{"history_id": "fixture:h2", "sql": "SELECT a.c1 AS sale_id, b.c2 AS region FROM t1 a JOIN t2 b ON a.c3 = b.c1"}
+{"history_id": "fixture:h3", "sql": "SELECT SUM(c2) AS total_revenue FROM t1"}
