@@ -1836,7 +1836,10 @@
     async function selectDatabase(dbId) {
       stopAllAnimations();
       hideMetricPopover();
+      const reqDsId = STATE.curDsId;
       STATE.curDbId = dbId;
+      STATE.curCaseId = null;
+      STATE.curCaseRaw = null;
       STATE.curUpdateIdx = 0;
       STATE.answerShowAllTables = false;
       STATE.showAllLeftTables = false;
@@ -1853,12 +1856,12 @@
         $('construct-status-tag').textContent = STATE.lang === 'zh' ? '正在加载归档…' : 'Loading database archive…';
         try {
           const raw = await fetchJsonCached(meta.path);
-          if (STATE.curDbId !== dbId) return;
+          if (STATE.curDsId !== reqDsId || STATE.curDbId !== dbId) return;
           const [hRes, gRes] = await Promise.all([
             raw.history_sql_path ? fetchJsonCached(raw.history_sql_path).catch(() => null) : Promise.resolve(null),
             raw.explanations ? fetchJsonCached(raw.explanations).catch(() => null) : Promise.resolve(null)
           ]);
-          if (STATE.curDbId !== dbId) return;
+          if (STATE.curDsId !== reqDsId || STATE.curDbId !== dbId) return;
           STATE.curHistoryRecords = hRes?.records || [];
           STATE.curGuideDocs = gRes || null;
           STATE.curDbRaw = normalizeLiveDb(meta, raw, STATE.curDsId);
@@ -3731,6 +3734,7 @@
     async function selectAnswerCase(caseId) {
       stopAnswerAnimation();
       STATE.curCaseId = caseId;
+      STATE.curCaseRaw = null;
       const db = STATE.curDbRaw;
       if (!db || !caseId) return;
 
@@ -3742,8 +3746,10 @@
         clearAnswerPanels('Loading saved ontology bindings, DB view & probes…');
         try {
           const qJson = await fetchJsonCached(meta.path);
+          if (STATE.curDbRaw !== db || STATE.curCaseId !== caseId) return;
           STATE.curCaseRaw = normalizeLiveCase(meta, qJson, db);
         } catch (err) {
+          if (STATE.curDbRaw !== db || STATE.curCaseId !== caseId) return;
           clearAnswerPanels(`Failed loading archive file (${err.message})`);
           return;
         }
