@@ -1,4 +1,6 @@
-**[Live Demo →](https://authurlord.github.io/SR_Release/)**
+**[Full Version (PDF, 27 pages)](https://authurlord.github.io/SR_Release/papers/SemanticRecovery-full.pdf) · [Live Demo →](https://authurlord.github.io/SR_Release/)**
+
+Full paper with proofs, baseline settings, algorithms, notation, and 15 case studies. Updated November 18, 2026.
 
 # SchemaRecovery: Building and Maintaining Database Semantic Layers from SQL Histories
 
