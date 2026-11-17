@@ -84,6 +84,15 @@
     .dot-rose { background: var(--rose); }
     .dot-indigo { background: var(--indigo); }
 
+    .resource-nav {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 8px 20px;
+      flex-shrink: 0; padding: 6px 16px; background: var(--blue-bg);
+      border-bottom: 1px solid var(--blue-border); font-size: 12px; font-weight: 600;
+    }
+    .resource-nav a { color: var(--blue); text-decoration: none; }
+    .resource-nav a:hover { text-decoration: underline; }
+    .resource-nav a:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
     /* Top Header & Full-Width Dataset Strip */
     .topbar {
       height: 54px; background: var(--surface);
@@ -703,8 +712,13 @@
 </head>
 <body>
 
+  <nav class="resource-nav" aria-label="Paper and demo">
+    <a href="papers/SemanticRecovery-full.pdf" target="_blank" rel="noopener" data-i18n="fullVersionLink">Full Version (PDF, 27 pages)</a>
+    <a href="#demo" aria-current="page" data-i18n="demoLink">Interactive Demo</a>
+  </nav>
+
   <!-- TOP NAVIGATION -->
-  <header class="topbar">
+  <header class="topbar" id="demo">
     <div class="topbar-left">
       <div class="brand">
         <div class="brand-mark">SR</div>
@@ -1051,6 +1065,8 @@
         docTitle: 'SchemaRecovery — Interactive Ontology & Text-to-SQL Workbench',
         modeLive: (dbs, qs) => `Full Archive · ${dbs} DBs / ${qs} Qs`,
         modeOffline: 'Offline Showcase Preview',
+        fullVersionLink: 'Full Version (PDF, 27 pages)',
+        demoLink: 'Interactive Demo',
         navConstruct: 'Construct',
         navAnswer: 'Answer',
         navUpdate: 'Update',
@@ -1134,6 +1150,8 @@
         docTitle: 'SchemaRecovery — 简洁学术风交互演示台',
         modeLive: (dbs, qs) => `全量归档直连 · ${dbs} 库 / ${qs} 题`,
         modeOffline: '离线精选演示版',
+        fullVersionLink: 'Full Version（PDF，27 页）',
+        demoLink: '在线 Demo',
         navConstruct: 'Construct 构建',
         navAnswer: 'Answer 问答',
         navUpdate: 'Update 演进',
