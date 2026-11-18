@@ -1,4 +1,4 @@
-**[Full Version（PDF，27 页）](https://authurlord.github.io/SR_Release/papers/SemanticRecovery-full.pdf) · [在线 Demo →](https://authurlord.github.io/SR_Release/)**
+**[Full Version（PDF，25 页）](https://authurlord.github.io/SR_Release/papers/SemanticRecovery-full.pdf) · [在线 Demo →](https://authurlord.github.io/SR_Release/)**
 
 论文完整版，包含完整证明、Baseline 配置、算法、变量表和 15 个案例。更新于 2026 年 11 月 18 日。
 
