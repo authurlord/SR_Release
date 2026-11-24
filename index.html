@@ -84,15 +84,6 @@
     .dot-rose { background: var(--rose); }
     .dot-indigo { background: var(--indigo); }
 
-    .resource-nav {
-      display: flex; align-items: center; flex-wrap: wrap; gap: 8px 20px;
-      flex-shrink: 0; padding: 6px 16px; background: var(--blue-bg);
-      border-bottom: 1px solid var(--blue-border); font-size: 12px; font-weight: 600;
-    }
-    .resource-nav a { color: var(--blue); text-decoration: none; }
-    .resource-nav a:hover { text-decoration: underline; }
-    .resource-nav a:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
-
     /* Top Header & Full-Width Dataset Strip */
     .topbar {
       height: 54px; background: var(--surface);
@@ -197,6 +188,7 @@
       padding: 6px 9px; border-radius: 7px; border: 1px solid var(--border);
       background: var(--surface); text-align: left; transition: all 0.12s;
       display: flex; align-items: center; justify-content: space-between; gap: 6px;
+      flex-shrink: 0;
     }
     .db-card:hover { border-color: var(--border-strong); background: var(--bg); }
     .db-card.active { border-color: var(--blue); background: var(--blue-bg); }
@@ -212,14 +204,14 @@
     .left-tab:hover { color: var(--text-main); }
     .left-tab.active { color: var(--blue); font-weight: 600; border-bottom-color: var(--blue); background: var(--surface); }
 
-    .left-scroll { flex: 1; overflow-y: auto; padding: 9px 10px; display: flex; flex-direction: column; gap: 7px; }
-    .table-accordion { border: 1px solid var(--border); border-radius: 7px; overflow: hidden; background: var(--surface); }
+    .left-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 9px 10px; display: flex; flex-direction: column; gap: 7px; }
+    .table-accordion { border: 1px solid var(--border); border-radius: 7px; overflow: hidden; background: var(--surface); flex-shrink: 0; }
     .table-header {
       width: 100%; padding: 6px 9px; display: flex; align-items: center; justify-content: space-between;
       font-family: var(--font-mono); font-size: 11.5px; font-weight: 600; color: var(--text-main); background: var(--bg);
     }
     .table-header:hover { background: var(--surface-subtle); }
-    .table-cols { padding: 4px 6px; display: flex; flex-direction: column; gap: 3px; border-top: 1px solid var(--border); }
+    .table-cols { padding: 4px 6px; display: flex; flex-direction: column; gap: 3px; border-top: 1px solid var(--border); max-height: 290px; overflow-y: auto; }
 
     /* 3-Column Grounding Row (Masked | Recovered | GT) */
     .col-3row-head {
@@ -256,7 +248,7 @@
 
     .sql-card {
       padding: 7px 9px; border-radius: 7px; border: 1px solid var(--border); background: var(--surface);
-      text-align: left; transition: all 0.12s; width: 100%;
+      text-align: left; transition: all 0.12s; width: 100%; flex-shrink: 0;
     }
     .sql-card:hover { border-color: var(--blue); box-shadow: var(--shadow-sm); }
     .sql-card.hl { border-color: var(--blue); background: var(--blue-bg); }
@@ -712,13 +704,8 @@
 </head>
 <body>
 
-  <nav class="resource-nav" aria-label="Paper and demo">
-    <a href="papers/SemanticRecovery-full.pdf" target="_blank" rel="noopener" data-i18n="fullVersionLink">Paper · Full Version (PDF, 25 pages)</a>
-    <a href="#demo" aria-current="page" data-i18n="demoLink">Interactive Demo</a>
-  </nav>
-
   <!-- TOP NAVIGATION -->
-  <header class="topbar" id="demo">
+  <header class="topbar">
     <div class="topbar-left">
       <div class="brand">
         <div class="brand-mark">SR</div>
@@ -1065,8 +1052,6 @@
         docTitle: 'SchemaRecovery — Interactive Ontology & Text-to-SQL Workbench',
         modeLive: (dbs, qs) => `Full Archive · ${dbs} DBs / ${qs} Qs`,
         modeOffline: 'Offline Showcase Preview',
-        fullVersionLink: 'Paper · Full Version (PDF, 25 pages)',
-        demoLink: 'Interactive Demo',
         navConstruct: 'Construct',
         navAnswer: 'Answer',
         navUpdate: 'Update',
@@ -1150,8 +1135,6 @@
         docTitle: 'SchemaRecovery — 简洁学术风交互演示台',
         modeLive: (dbs, qs) => `全量归档直连 · ${dbs} 库 / ${qs} 题`,
         modeOffline: '离线精选演示版',
-        fullVersionLink: 'Paper · 论文完整版（PDF，25 页）',
-        demoLink: '在线 Demo',
         navConstruct: 'Construct 构建',
         navAnswer: 'Answer 问答',
         navUpdate: 'Update 演进',
@@ -1601,6 +1584,11 @@
       curDbRaw: null,
       curHistoryRecords: [],
       curGuideDocs: null,
+      curHistoryPath: null,
+      curGuidePath: null,
+      curHistoryLoaded: false,
+      curGuideLoaded: false,
+      curLeftTab: 'tables',
       curStage: 'construct',
       constructView: 'graph',  // 'graph' | 'all' | 'matrix'
       constructStep: 0,        // 0..4 (default unbuilt)
@@ -1624,6 +1612,7 @@
       isDrawerOpen: true,
       filterText: '',
       cache: new Map(),
+      inFlight: new Map(),
       _ui: {
         dsIds: [], dbIds: [], leftCols: [], graphCols: [], dbCols: [], bindCols: [],
         edges: [], tables: [], indicators: [], clauses: [], clauseObjects: [],
@@ -1681,7 +1670,7 @@
         renderDbList();
         renderLeftContent();
         renderConstructBoard();
-        renderConstructMatrix();
+        if (STATE.constructView === 'matrix') renderConstructMatrix();
         syncConstructControls();
         if (STATE.curCaseRaw) renderAnswerCaseImmediate(STATE.curCaseRaw);
         initUpdateForDb();
@@ -1694,6 +1683,7 @@
       let useLive = false;
       if (location.protocol.startsWith('http')) {
         try {
+          fetchJsonCached('data/formula_1.json').catch(() => null);
           const [idxResp, gtResp] = await Promise.all([
             fetch('archive-index.json'),
             fetch('gt_column_map.json').catch(() => null)
@@ -1736,12 +1726,21 @@
 
     async function fetchJsonCached(path) {
       if (STATE.cache.has(path)) return STATE.cache.get(path);
-      const r = await fetch(path);
-      if (!r.ok) throw new Error(`HTTP ${r.status}: ${path}`);
-      const data = await r.json();
-      STATE.cache.set(path, data);
-      if (STATE.cache.size > 16) STATE.cache.delete(STATE.cache.keys().next().value);
-      return data;
+      if (STATE.inFlight.has(path)) return STATE.inFlight.get(path);
+      const p = (async () => {
+        const r = await fetch(path);
+        if (!r.ok) throw new Error(`HTTP ${r.status}: ${path}`);
+        const data = await r.json();
+        STATE.cache.set(path, data);
+        if (STATE.cache.size > 64) STATE.cache.delete(STATE.cache.keys().next().value);
+        return data;
+      })();
+      STATE.inFlight.set(path, p);
+      try {
+        return await p;
+      } finally {
+        STATE.inFlight.delete(path);
+      }
     }
 
     function lookupGroundTruth(dsId, dbId, tableId, maskedCol) {
@@ -1875,13 +1874,12 @@
         try {
           const raw = await fetchJsonCached(meta.path);
           if (STATE.curDsId !== reqDsId || STATE.curDbId !== dbId) return;
-          const [hRes, gRes] = await Promise.all([
-            raw.history_sql_path ? fetchJsonCached(raw.history_sql_path).catch(() => null) : Promise.resolve(null),
-            raw.explanations ? fetchJsonCached(raw.explanations).catch(() => null) : Promise.resolve(null)
-          ]);
-          if (STATE.curDsId !== reqDsId || STATE.curDbId !== dbId) return;
-          STATE.curHistoryRecords = hRes?.records || [];
-          STATE.curGuideDocs = gRes || null;
+          STATE.curHistoryPath = raw.history_sql_path || null;
+          STATE.curGuidePath = raw.explanations || null;
+          STATE.curHistoryRecords = (STATE.curHistoryPath && STATE.cache.has(STATE.curHistoryPath)) ? (STATE.cache.get(STATE.curHistoryPath)?.records || []) : [];
+          STATE.curGuideDocs = (STATE.curGuidePath && STATE.cache.has(STATE.curGuidePath)) ? STATE.cache.get(STATE.curGuidePath) : null;
+          STATE.curHistoryLoaded = !STATE.curHistoryPath || STATE.cache.has(STATE.curHistoryPath);
+          STATE.curGuideLoaded = !STATE.curGuidePath || STATE.cache.has(STATE.curGuidePath);
           STATE.curDbRaw = normalizeLiveDb(meta, raw, STATE.curDsId);
           STATE.curDbRaw._dsId = STATE.curDsId;
         } catch (err) {
@@ -1890,6 +1888,10 @@
         }
       } else {
         STATE.curDbRaw = meta;
+        STATE.curHistoryPath = null;
+        STATE.curGuidePath = null;
+        STATE.curHistoryLoaded = true;
+        STATE.curGuideLoaded = true;
         STATE.curHistoryRecords = meta.historySqls || [];
         STATE.curGuideDocs = {
           documents: {
@@ -1905,11 +1907,14 @@
 
       renderLeftContent();
       renderConstructBoard();
-      renderConstructMatrix();
+      if (STATE.constructView === 'matrix') renderConstructMatrix();
       syncConstructControls();
       initAnswerForDb();
       initUpdateForDb();
       renderTrajectoryDrawer();
+      if (STATE.curLeftTab === 'history' || STATE.curLeftTab === 'guide') {
+        ensureLeftAuxLoaded(STATE.curLeftTab);
+      }
     }
 
     function annotateMaskedFormula(expr, recMap) {
@@ -2271,31 +2276,66 @@
       `).join('') + moreTablesBtn || `<div class="skeleton-box">No matching tables or columns</div>`;
 
       // Tab 2: History SQLs
-      const recs = (STATE.curHistoryRecords || []).filter(h => !q || (h.sql || '').toLowerCase().includes(q) || (h.history_id || h.id || '').toLowerCase().includes(q));
-      $('left-content-history').innerHTML = recs.length ? recs.slice(0, 35).map((h, i) => {
-        const hid = h.history_id || h.id || `SQL #${i + 1}`;
-        const tag = h.tag || (h.supported_object_ids ? `${h.supported_object_ids.length} objs` : 'SQL log');
-        const note = h.note || `Physical cols: ${(h.supported_physical_identifiers || []).slice(0, 4).join(', ') || 'parsed'}`;
-        return `
-          <button class="sql-card" data-sql-idx="${i}" onclick="clickHistorySql(${i})">
-            <div class="sql-card-head">
-              <span class="mono" style="font-weight:700; font-size:10.5px; color:var(--blue);">${esc(hid)}</span>
-              <span class="badge badge-gray">${esc(tag)}</span>
-            </div>
-            <div class="sql-snippet">${esc(h.sql)}</div>
-            <div style="font-size:10px; color:var(--text-muted); margin-top:4px;">${esc(note)}</div>
-          </button>
-        `;
-      }).join('') : `<div class="skeleton-box">No plaintext history SQL saved for this DB</div>`;
+      renderLeftAuxPanels();
+    }
 
-      // Tab 3: Docs
-      const docs = STATE.curGuideDocs?.documents;
-      const docHtml = STATE.lang === 'zh'
-        ? (docs?.zh?.html || docs?.en?.html)
-        : (docs?.en?.html || docs?.zh?.html);
-      $('left-content-guide').innerHTML = docHtml
-        ? `<div class="mini-box" style="font-size:11.5px; line-height:1.6; color:var(--text-body); user-select:text;">${docHtml}</div>`
-        : `<div class="skeleton-box">No domain guide recorded for this database</div>`;
+    function renderLeftAuxPanels() {
+      const db = STATE.curDbRaw;
+      if (!db) return;
+      const q = STATE.filterText.trim().toLowerCase();
+      $('tab-sql-count').textContent = `(${STATE.curHistoryRecords.length || db.history_sql_count || 0})`;
+
+      if (!STATE.curHistoryLoaded && STATE.curHistoryPath) {
+        $('left-content-history').innerHTML = `<div class="skeleton-box">${STATE.lang === 'zh' ? '正在按需加载历史 SQL…' : 'Loading history SQL on demand…'}</div>`;
+      } else {
+        const recs = (STATE.curHistoryRecords || []).filter(h => !q || (h.sql || '').toLowerCase().includes(q) || (h.history_id || h.id || '').toLowerCase().includes(q));
+        $('left-content-history').innerHTML = recs.length ? recs.slice(0, 35).map((h, i) => {
+          const hid = h.history_id || h.id || `SQL #${i + 1}`;
+          const tag = h.tag || (h.supported_object_ids ? `${h.supported_object_ids.length} objs` : 'SQL log');
+          const note = h.note || `Physical cols: ${(h.supported_physical_identifiers || []).slice(0, 4).join(', ') || 'parsed'}`;
+          return `
+            <button class="sql-card" data-sql-idx="${i}" onclick="clickHistorySql(${i})">
+              <div class="sql-card-head">
+                <span class="mono" style="font-weight:700; font-size:10.5px; color:var(--blue);">${esc(hid)}</span>
+                <span class="badge badge-gray">${esc(tag)}</span>
+              </div>
+              <div class="sql-snippet">${esc(h.sql)}</div>
+              <div style="font-size:10px; color:var(--text-muted); margin-top:4px;">${esc(note)}</div>
+            </button>
+          `;
+        }).join('') : `<div class="skeleton-box">No plaintext history SQL saved for this DB</div>`;
+      }
+
+      if (!STATE.curGuideLoaded && STATE.curGuidePath) {
+        $('left-content-guide').innerHTML = `<div class="skeleton-box">${STATE.lang === 'zh' ? '正在按需加载双语说明文档…' : 'Loading schema guide on demand…'}</div>`;
+      } else {
+        const docs = STATE.curGuideDocs?.documents;
+        const docHtml = STATE.lang === 'zh'
+          ? (docs?.zh?.html || docs?.en?.html)
+          : (docs?.en?.html || docs?.zh?.html);
+        $('left-content-guide').innerHTML = docHtml
+          ? `<div class="mini-box" style="font-size:11.5px; line-height:1.6; color:var(--text-body); user-select:text;">${docHtml}</div>`
+          : `<div class="skeleton-box">No domain guide recorded for this database</div>`;
+      }
+    }
+
+    async function ensureLeftAuxLoaded(tab) {
+      if (!STATE.liveMode) return;
+      const reqDsId = STATE.curDsId;
+      const reqDbId = STATE.curDbId;
+      if (tab === 'history' && !STATE.curHistoryLoaded && STATE.curHistoryPath) {
+        const hRes = await fetchJsonCached(STATE.curHistoryPath).catch(() => null);
+        if (STATE.curDsId !== reqDsId || STATE.curDbId !== reqDbId) return;
+        STATE.curHistoryRecords = hRes?.records || [];
+        STATE.curHistoryLoaded = true;
+        renderLeftAuxPanels();
+      } else if (tab === 'guide' && !STATE.curGuideLoaded && STATE.curGuidePath) {
+        const gRes = await fetchJsonCached(STATE.curGuidePath).catch(() => null);
+        if (STATE.curDsId !== reqDsId || STATE.curDbId !== reqDbId) return;
+        STATE.curGuideDocs = gRes || null;
+        STATE.curGuideLoaded = true;
+        renderLeftAuxPanels();
+      }
     }
 
     function clickHistorySql(idx) {
@@ -2308,11 +2348,13 @@
     }
 
     function switchLeftTab(tab) {
+      STATE.curLeftTab = tab;
       ['tables', 'history', 'guide'].forEach(tKey => {
         $('left-tab-' + tKey).classList.toggle('active', tKey === tab);
         $('left-content-' + tKey).classList.toggle('hidden', tKey !== tab);
       });
       $('left-search-wrap').classList.toggle('hidden', tab === 'guide');
+      if (tab === 'history' || tab === 'guide') ensureLeftAuxLoaded(tab);
     }
 
     function toggleTableAccordion(idx) { document.getElementById('tbl-body-' + idx)?.classList.toggle('hidden'); }
