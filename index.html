@@ -815,6 +815,9 @@
               <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               <span data-i18n="btnRunConstruct">Run Build from 0</span>
             </button>
+            <button id="btn-build-all-dbs" class="btn-emerald" onclick="runBuildAllDatabases()" title="Build all databases across all datasets at once">
+              <span data-i18n="btnBuildAll">Run Build All DBs</span>
+            </button>
             <button id="btn-step-construct" class="btn-ghost" onclick="stepConstructAnimation()" data-i18n="btnStep">Step →</button>
             <button class="btn-ghost" onclick="resetConstructCanvas()" data-i18n="btnResetRaw">Reset to 0 (Raw)</button>
             <div class="divider-v" style="height:16px;"></div>
@@ -1083,6 +1086,7 @@
         tabGuide: 'Docs',
         searchPlaceholder: 'Filter table, masked (XCL_), alias, GT...',
         btnRunConstruct: 'Run Build from 0',
+        btnBuildAll: 'Run Build All DBs',
         btnStep: 'Step →',
         btnResetRaw: 'Reset to 0 (Raw)',
         datasetsLbl: 'Datasets',
@@ -1168,6 +1172,7 @@
         tabGuide: '业务文档',
         searchPlaceholder: '搜索表、脱敏列(XCL_)、恢复名或真值...',
         btnRunConstruct: '从 0 运行构建回放',
+        btnBuildAll: '一键构建全部库',
         btnStep: '单步 →',
         btnResetRaw: '重置为 0 (未恢复态)',
         datasetsLbl: '评测数据集',
@@ -3582,6 +3587,32 @@
         meta._builtInSession = Boolean(isBuilt);
         meta.constructed = Boolean(isBuilt);
       }
+    }
+
+    function runBuildAllDatabases() {
+      stopAllAnimations();
+      let totalDbs = 0;
+      for (const ds of (STATE.datasets || [])) {
+        for (const dbMeta of (ds.databases || [])) {
+          dbMeta._builtInSession = true;
+          dbMeta.constructed = true;
+          totalDbs++;
+        }
+      }
+      const db = STATE.curDbRaw;
+      if (!db) return;
+      STATE.constructStep = 4;
+      setActiveDbBuilt(true);
+      renderDbList();
+      renderLeftContent();
+      renderConstructBoard();
+      if (STATE.constructView === 'matrix') renderConstructMatrix();
+      syncConstructControls();
+      initAnswerForDb();
+      renderTrajectoryDrawer();
+      $('construct-status-tag').textContent = STATE.lang === 'zh'
+        ? `Phase 4 · 全部 ${totalDbs} 个数据库已构建完成（任意切库均可直接问答）`
+        : `Phase 4 · All ${totalDbs} databases built (switch any DB to open Answer directly)`;
     }
 
     function quickBuildAndOpenAnswer() {
